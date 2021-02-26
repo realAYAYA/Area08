@@ -1,0 +1,118 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Gears/MsMeleeWeapon.h"
+#include "Components/AudioComponent.h"
+#include "Components/BoxComponent.h"// 碰撞盒子 用于攻击判定
+
+AMsMeleeWeapon::AMsMeleeWeapon() {
+
+	AttackBox = CreateDefaultSubobject<UBoxComponent>("AttackBoxComp");
+	if (this->MeshComponent) {
+		AttackBox->SetupAttachment(this->MeshComponent, "Attack");
+	}
+	AttackBox->SetCollisionProfileName("WeaponC");
+	AttackBox->SetNotifyRigidBodyCollision(true);// 生成撞击事件，不然无法触发碰撞
+	AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AttackBox->SetBoxExtent(FVector(5));
+
+	StaggeredBox = CreateDefaultSubobject<UBoxComponent>("BlockedBoxComp");
+	if (this->MeshComponent) {
+		StaggeredBox->SetupAttachment(this->MeshComponent, "Staggered");
+	}
+	StaggeredBox->SetCollisionProfileName("WeaponOther");
+	StaggeredBox->SetNotifyRigidBodyCollision(true);
+	StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StaggeredBox->SetBoxExtent(FVector(5));
+
+	ParriedBox = CreateDefaultSubobject<UBoxComponent>("ParriedBoxComp");
+	if (this->MeshComponent) {
+		ParriedBox->SetupAttachment(this->MeshComponent, "Parried");
+	}
+	ParriedBox->SetCollisionProfileName("WeaponOther");
+	ParriedBox->SetNotifyRigidBodyCollision(true);
+	ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ParriedBox->SetBoxExtent(FVector(5));
+}
+
+void AMsMeleeWeapon::OnHit(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& SweepResult)// 武器命中要做的事情
+{
+	if (AudioPlayComponent) {
+		AudioPlayComponent->SetPitchMultiplier(FMath::RandRange(.5f, 4.f));
+		
+		//AudioPlayComponent->Play();
+	}
+}
+
+void AMsMeleeWeapon::OnParry(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& SweepResult)// 被弹反要做的事情
+{
+	//this->MeleeBreak();// 先将攻击过程打断
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(11111), false);
+	OnParriedChanged.Broadcast(this, 0);// 委托
+}
+
+void AMsMeleeWeapon::OnStaggered(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& SweepResult)// 武器弹刀要做的事情
+{
+	//this->MeleeBreak();// 先将攻击过程打断
+	
+	//bStaggered.Broadcast(this, 0.0f, 0.0f, 0.0f, InstigatedBy, DamageCauser);// 委托
+}
+
+void AMsMeleeWeapon::OnAttackEnableChanged(bool Enable)
+{
+	if (Enable) {
+		AttackBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMsMeleeWeapon::OnStaggeredEnableChanged(bool Enable)
+{
+	if (Enable) {
+		StaggeredBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMsMeleeWeapon::OnParriedEnableChanged(bool Enable)
+{
+	if (Enable) {
+		ParriedBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMsMeleeWeapon::MeleeBreak()
+{
+	this->OnAttackEnableChanged(false);
+	this->OnParriedEnableChanged(false);
+	this->OnStaggeredEnableChanged(false);
+}
+
+void AMsMeleeWeapon::Melee()
+{
+	// 播放人物专有的武器动画
+}
+
+void AMsMeleeWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+	AttackBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnHit);
+	StaggeredBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnParry);
+	ParriedBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnParry);
+}
