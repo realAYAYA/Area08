@@ -5,8 +5,9 @@
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PhysicalMaterials/PhysicalMaterial.h"
+#include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
 
+#include "Area08/Area08.h"
 #include "Characters/MS.h"
 
 ABullet::ABullet() {
@@ -36,15 +37,26 @@ void ABullet::BeginPlay() {
 
 void ABullet::OnHit(UPrimitiveComponent* OverlappedComponent,
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
-	bool bFromSweep, const FHitResult& SweepResult)
+	bool bFromSweep, const FHitResult& Hit)
 {
 	if (HitActor) {
-		/*AMS* C = Cast<AMS>(HitActor);
-		if (C) {
-			UGameplayStatics::ApplyPointDamage(C, Damage,
-				this->GetActorForwardVector(), SweepResult, this->GetOwner()->GetInstigatorController(), this, DamageType);
-		}*/
-
+		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		switch (SurfaceType)
+		{
+		case MS_HEAD:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head shoot.")), false);
+			break;
+		case MS_BODY:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body shoot.")), false);
+			break;
+		case MS_LIMB:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LIMB shoot.")), false);
+			break;
+		default:
+			break;
+		}
+		/*UGameplayStatics::ApplyPointDamage(HitActor, Damage,
+			this->GetActorForwardVector(), Hit, this->GetOwner()->GetInstigatorController(), this, DamageType);*/
 		this->Destroy();
 	}
 }

@@ -26,7 +26,7 @@ struct FWeaponMontage : public FTableRowBase {
 };
 
 UENUM()
-enum class Weapon : uint8
+enum class WeaponType : uint8
 {
 	// Gun
 	MS_Riflegun,
@@ -53,7 +53,7 @@ public:
 	AMsWeapon();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Properties")
-	Weapon Type;
+	WeaponType Type;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USceneComponent* Root;// 用作根，防止武器模型为根无法设置姿态

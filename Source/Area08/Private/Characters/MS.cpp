@@ -12,6 +12,10 @@
 #include "Gears/MsWeapon.h"
 #include "Gears/MsGun.h"
 #include "Gears/MsMeleeWeapon.h"
+#include "Blueprint/UserWidget.h"
+#include "HUD/MyUserWidget.h"// Test HUD
+#include "Components/ProgressBar.h"
+#include "Components/Image.h"
 
 
 AMS::AMS() {
@@ -35,11 +39,48 @@ AMS::AMS() {
 
 }
 
-void AMS::OnHealthChanged(UMsHealthComponent* OwnerHealthComp, float Health, float HeathDelta, 
+void AMS::InitHUD()
+{
+	FLinearColor HudGreen = { 0.21f,1.0f,0.8f,1.0f };
+	if (HUD) {
+		HUD->HudHead->SetColorAndOpacity(HudGreen);
+		HUD->HudBody->SetColorAndOpacity(HudGreen);
+		HUD->HudRA->SetColorAndOpacity(HudGreen);
+		HUD->HudLA->SetColorAndOpacity(HudGreen);
+		HUD->HudRL->SetColorAndOpacity(HudGreen);
+		HUD->HudLL->SetColorAndOpacity(HudGreen);
+	}
+}
+
+FLinearColor AMS::UpdateHUD()
+{
+	FLinearColor HudGreen = { 0.21f,1.0f,0.8f,1.0f };
+	FLinearColor HudYellow = { 1.0f,0.41f,0.15f,1.0f };
+	FLinearColor HudRed = { 1.0f,0,0,1.0f };
+	
+	if (this->HealthManager && this->HealthManager->BodyHealth > 0) {
+		float Val = this->HealthManager->BodyHealth;
+		if (Val >= 66.0f) {
+			return HudGreen;
+		}
+		else if (Val < 66.0f && Val >= 33.0f) {
+			return HudYellow;
+		}
+		else{
+			return HudRed;
+		}
+	}
+	return HudRed;
+}
+
+void AMS::OnHealthChanged(UMsHealthComponent* OwnerHealthComp, float Health, float HeathDelta,
 	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (bDied)
 		return;
+
+	this->UpdateHUD();
+
 	if (Health <= 0.0f && !bDied)
 	{
 		SetDeath();
@@ -52,7 +93,7 @@ void AMS::BeginPlay()
 
 	HealthManager->OnHealthChanged.AddDynamic(this, &AMS::OnHealthChanged);
 
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= Weapon::MS_Melee) {
+	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= WeaponType::MS_Melee) {
 		AMsMeleeWeapon* M = Cast<AMsMeleeWeapon>(GearManager->MasterWeapon);
 		if (M) {
 			M->OnParriedChanged.AddDynamic(this, &AMS::PlayParriedMontage);
@@ -60,6 +101,18 @@ void AMS::BeginPlay()
 	}
 	
 	LineTracer->SetCamera(FirstPersonCameraComponent);
+
+	// 加载一个测试用的HUD，后期删掉
+	if (WidgetClass) {
+		HUD = CreateWidget<UMyUserWidget>(GetWorld(), WidgetClass);
+		if (HUD) {
+			if (HUD->HudBody) {
+				HUD->HudBody->ColorAndOpacityDelegate.BindDynamic(this, &AMS::UpdateHUD);// 记得UFUNCTION()
+			}
+			InitHUD();
+			HUD->AddToViewport();
+		}
+	}
 }
 
 void AMS::Stuned(bool Val)
@@ -80,7 +133,6 @@ void AMS::DiableMsMovement(bool Val)
 void AMS::TestTouch()
 {
 	// calculate delta for this frame from the rate information
-	PlayParriedMontage(NULL,1);
 	
 	LineTracer->Tracing();
 }
@@ -88,7 +140,7 @@ void AMS::TestTouch()
 void AMS::StartFire()
 {
 	if (GearManager && GearManager->MasterWeapon) {
-		if (GearManager->MasterWeapon->Type < Weapon::MS_Melee) {
+		if (GearManager->MasterWeapon->Type < WeaponType::MS_Melee) {
 			GearManager->MasterWeapon->StartFire();
 		}
 		else
@@ -105,7 +157,7 @@ void AMS::StartFire()
 
 void AMS::StopFire()
 {
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type != Weapon::MS_Melee) {
+	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type != WeaponType::MS_Melee) {
 		GearManager->MasterWeapon->StopFire();
 	}
 }
@@ -115,7 +167,7 @@ void AMS::Melee()
 	// 令武器设置攻击
 
 	// 让武器播放特有的攻击动作
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= Weapon::MS_Melee) {
+	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= WeaponType::MS_Melee) {
 		GearManager->MasterWeapon->Melee();
 	}
 }
@@ -147,14 +199,14 @@ void AMS::SetDeath()
 void AMS::PlayParriedMontage(AMsMeleeWeapon* Weapon, float val)
 {
 	if (bParried) {
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(123456789), false);
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Error Parried Has opened")), false);
 	}
 	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(0), false);
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Begin Parried")), false);
 	}
 	bParried = true;// 在此处打开被弹反的状态变量，在之后的动画通知中会关闭
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(22222), false);
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Parried End")), false);
 	PlayAnimMontage(ParriedMontage, 1.0f);
 }
 

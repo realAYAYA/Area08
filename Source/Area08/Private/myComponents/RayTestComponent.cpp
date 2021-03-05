@@ -7,8 +7,12 @@
 #include "Camera/CameraComponent.h"
 #include "Gears/MsWeapon.h"
 
-
-
+#include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
+//#include "Area08/Area08.h"
+#define MS_HEAD	SurfaceType1
+#define MS_BODY	SurfaceType2
+#define MS_LIMB	SurfaceType3
+#define SURFACE_FLESHDEFAULT SurfaceType10
 // Sets default values for this component's properties
 URayTestComponent::URayTestComponent()
 {
@@ -37,11 +41,30 @@ void URayTestComponent::Tracing()
 		FCollisionQueryParams QueryParam;
 		QueryParam.AddIgnoredActor(MyOwner);// Ignore Character
 		QueryParam.bTraceComplex = true;
+		QueryParam.bReturnPhysicalMaterial = true;
+
 		if (GetWorld()->LineTraceSingleByChannel(Hit, BeginLocation, TraceEnd, ECC_Visibility, QueryParam)) {
 			AActor* HitActor = Hit.GetActor();
-			AMsWeapon* Weapon = Cast<AMsWeapon>(HitActor);
-			if (Weapon) {
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, Weapon->Name.ToString(), false);
+			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+			switch (SurfaceType)
+			{
+			case SurfaceType_Default:
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(0), false);
+				break;
+			case MS_HEAD:
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(88888), false);
+				break;
+			case MS_BODY:
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(66666), false);
+				break;
+			case MS_LIMB:
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(55555), false);
+				break;
+			case SURFACE_FLESHDEFAULT:
+				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(55555), false);
+				break;
+			default:
+				break;
 			}
 		}
 		if (DrawLine) {

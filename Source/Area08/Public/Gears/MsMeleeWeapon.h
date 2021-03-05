@@ -7,7 +7,7 @@
 #include "MsMeleeWeapon.generated.h"
 
 /**
- * 机甲的近战武器实现，碰撞判定，伤害，盾反，弹刀，技能实现
+ * 机甲的近战武器实现:在初始化时，要记得将MS的弹刀，和弹反事件与该武器实例进行委托
  */
 // 自定义事件：被弹反
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnParriedSignature,class AMsMeleeWeapon*,MeleeWeapon,float,Val);
@@ -20,6 +20,13 @@ class AREA08_API AMsMeleeWeapon : public AMsWeapon
 	
 public:
 	AMsMeleeWeapon();
+
+	/* 武器特效*/
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	//UParticleSystem* MuzzleEffect;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	//UParticleSystem* HitEffect;
 
 	/* 攻击，可被弹刀，被招架 判定开启*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))

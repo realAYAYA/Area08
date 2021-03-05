@@ -4,6 +4,9 @@
 #include "Gears/MsMeleeWeapon.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"// 碰撞盒子 用于攻击判定
+#include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
+
+#include "Area08/Area08.h"
 
 AMsMeleeWeapon::AMsMeleeWeapon() {
 
@@ -11,7 +14,7 @@ AMsMeleeWeapon::AMsMeleeWeapon() {
 	if (this->MeshComponent) {
 		AttackBox->SetupAttachment(this->MeshComponent, "Attack");
 	}
-	AttackBox->SetCollisionProfileName("WeaponC");
+	AttackBox->SetCollisionProfileName("Weapon");
 	AttackBox->SetNotifyRigidBodyCollision(true);// 生成撞击事件，不然无法触发碰撞
 	AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	AttackBox->SetBoxExtent(FVector(5));
@@ -37,12 +40,31 @@ AMsMeleeWeapon::AMsMeleeWeapon() {
 
 void AMsMeleeWeapon::OnHit(UPrimitiveComponent* OverlappedComponent, 
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
-	bool bFromSweep, const FHitResult& SweepResult)// 武器命中要做的事情
+	bool bFromSweep, const FHitResult& Hit)// 武器命中要做的事情
 {
-	if (AudioPlayComponent) {
-		AudioPlayComponent->SetPitchMultiplier(FMath::RandRange(.5f, 4.f));
-		
-		//AudioPlayComponent->Play();
+	if (HitActor) {
+		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Hit generate")), false);
+		switch (SurfaceType)
+		{
+		case MS_HEAD:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head hit.")), false);
+			break;
+		case MS_BODY:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body hit.")), false);
+			break;
+		case MS_LIMB:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LIMB hit.")), false);
+			break;
+		default:
+			break;
+		}
+
+		if (AudioPlayComponent) {
+			AudioPlayComponent->SetPitchMultiplier(FMath::RandRange(.5f, 4.f));
+
+			//AudioPlayComponent->Play();
+		}
 	}
 }
 
@@ -50,8 +72,7 @@ void AMsMeleeWeapon::OnParry(UPrimitiveComponent* OverlappedComponent,
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)// 被弹反要做的事情
 {
-	//this->MeleeBreak();// 先将攻击过程打断
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(11111), false);
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Weapon Notify activated.")), false);
 	OnParriedChanged.Broadcast(this, 0);// 委托
 }
 

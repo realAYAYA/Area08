@@ -43,7 +43,7 @@ void UMSGearManager::SetMasterWeapon()
 			MasterWeapon->SetOwner(Owner);
 			MasterWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
 
-			if (MasterWeapon->Type >= Weapon::MS_Melee) {
+			if (MasterWeapon->Type >= WeaponType::MS_Melee) {
 
 			}
 		}
