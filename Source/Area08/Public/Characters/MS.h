@@ -19,12 +19,7 @@ public:
 
 	class UMyUserWidget* HUD;// Test HUD
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = UI)
-	TSubclassOf<UMyUserWidget> WidgetClass;
-	void InitHUD();
-	UFUNCTION()
-	FLinearColor UpdateHUD();// 用于将HUD的变量进行'代理'
-
-	
+	TSubclassOf<UMyUserWidget> WidgetClass;	
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = MSComponent, meta = (AllowPrivateAccess = "true"))
 	class URayTestComponent* LineTracer;

@@ -3,11 +3,17 @@
 
 #include "myComponents/MsHealthComponent.h"
 
+#include"NumCalculation/Area08DamageType.h"
+#include"Items/Bullet.h"
+
 // Sets default values for this component's properties
 UMsHealthComponent::UMsHealthComponent()
 {
 	// ...
+	DefaultHeadHealth=60.0f;
 	DefaultBodyHealth = 100.0f;
+	DefaultArmHealth=60.0f;
+	DefaultLegHealth=60.0f;
 }
 
 
@@ -15,8 +21,49 @@ void UMsHealthComponent::HandleTakeDamage(AActor* DamagedActor, float Damage, co
 {
 	if (Damage <= 0)
 		return;
-	BodyHealth = BodyHealth >= Damage ? BodyHealth - Damage : 0.0f;
-	OnHealthChanged.Broadcast(this, BodyHealth, Damage, DamageType, InstigatedBy, DamageCauser);
+	
+	const ABullet* BL = Cast<ABullet>(DamageCauser);
+	if(BL&&BL->DamageType)
+	{
+		switch (BL->DamageType->GetHitReion())
+		{
+		case DamageRegion::Head:
+			HeadHealth = HeadHealth >= Damage ? HeadHealth - Damage : 0.0f;
+			break;
+		case DamageRegion::Body:
+			BodyHealth = BodyHealth >= Damage ? BodyHealth - Damage : 0.0f;
+			break;
+		case DamageRegion::RArm:
+			RightArmHealth = RightArmHealth >= Damage ? RightArmHealth - Damage : 0.0f;
+			break;
+		case DamageRegion::LArm:
+			LeftArmHealth = LeftArmHealth >= Damage ? LeftArmHealth - Damage : 0.0f;
+			break;
+		case DamageRegion::RLeg:
+			RightLegHealth = RightLegHealth >= Damage ? RightLegHealth - Damage : 0.0f;
+			break;
+		case DamageRegion::LLeg:
+			LeftLegHealth = LeftLegHealth >= Damage ? LeftLegHealth - Damage : 0.0f;
+			break;
+		}
+	}
+	else{	// 这块是处理其他伤害测试用的，全身掉血测试
+		HeadHealth = HeadHealth >= Damage ? HeadHealth - Damage : 0.0f;
+		BodyHealth = BodyHealth >= Damage ? BodyHealth - Damage : 0.0f;
+		RightArmHealth = RightArmHealth >= Damage ? RightArmHealth - Damage : 0.0f;
+		LeftArmHealth = LeftArmHealth >= Damage ? LeftArmHealth - Damage : 0.0f;
+		RightLegHealth = RightLegHealth >= Damage ? RightLegHealth - Damage : 0.0f;
+		LeftLegHealth = LeftLegHealth >= Damage ? LeftLegHealth - Damage : 0.0f;
+	}
+	
+	if(BL)
+	{
+		OnHealthChanged.Broadcast(this, BodyHealth, Damage, BL->DamageType, InstigatedBy, DamageCauser);
+	}
+	else
+	{	// 这块是处理其他伤害测试用的，全身掉血测试
+		OnHealthChanged.Broadcast(this, BodyHealth, Damage, DamageType, InstigatedBy, DamageCauser);
+	}
 }
 
 // Called when the game starts
@@ -25,7 +72,7 @@ void UMsHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	InitHealt();
+	InitHealth();
 
 	AActor* Owner = GetOwner();
 	if (Owner) {
@@ -33,7 +80,9 @@ void UMsHealthComponent::BeginPlay()
 	}
 }
 
-void UMsHealthComponent::InitHealt()
+void UMsHealthComponent::InitHealth()
 {
 	BodyHealth = DefaultBodyHealth;
+	LeftArmHealth=RightArmHealth=DefaultArmHealth;
+	LeftLegHealth=RightLegHealth=DefaultLegHealth;
 }

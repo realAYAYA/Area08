@@ -3,3 +3,7 @@
 
 #include "NumCalculation/Area08DamageType.h"
 
+UArea08DamageType::UArea08DamageType() {
+	DamageType = myDamageType::Stab;
+	HitRegion = DamageRegion::None;
+}

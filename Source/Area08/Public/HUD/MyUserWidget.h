@@ -30,4 +30,7 @@ public:
 	UImage* HudLL;
 	UPROPERTY()
 	UImage* HudRL;
+
+	void Init();
+	void UpdateHealth(const class UMsHealthComponent* HealthComp);
 };

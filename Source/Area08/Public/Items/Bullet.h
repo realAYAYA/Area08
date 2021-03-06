@@ -13,24 +13,29 @@ class AREA08_API ABullet : public AItem
 
 public:
 	ABullet();
+	
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
-		float Damage;
+	float Damage;
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
-		TSubclassOf<class UDamageType> DamageType;
+	TSubclassOf<class UArea08DamageType> BPDamageType;
+	
+	UPROPERTY(EditAnywhere, Category = "Properties")
+	class UArea08DamageType* DamageType;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
-		class UStaticMeshComponent* Mesh;
+	class UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
-		class UProjectileMovementComponent* MovementComp;
+	class UProjectileMovementComponent* MovementComp;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
-		class USoundBase* HitSound;
+	class USoundBase* HitSound;
 
 	UPROPERTY(EditAnywhere, Category = "Properties")
-		float LifeTime;
+	float LifeTime;
+
 protected:
 	virtual void BeginPlay() override;
 

@@ -19,7 +19,7 @@ void AMsGun::BeginPlay()
 
 void AMsGun::OnFire()
 {
-	if (Bullet != NULL)
+	if (Bullet != nullptr)
 	{
 		FActorSpawnParameters ActorSpawnParams;
 		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
@@ -35,7 +35,7 @@ void AMsGun::OnFire()
 
 void AMsGun::StartFire()
 {
-	float FirstDelay = FMath::Max(0.0f, LastFireTime + TimeBetweenShoots - GetWorld()->TimeSeconds);
+	const float FirstDelay = FMath::Max(0.0f, LastFireTime + TimeBetweenShoots - GetWorld()->TimeSeconds);
 	GetWorldTimerManager().SetTimer(TimeHandle_TimeBetweenShoots, this, &AMsGun::OnFire, TimeBetweenShoots, true, FirstDelay);
 }
 

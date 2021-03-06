@@ -53,9 +53,6 @@ void AMsMeleeWeapon::OnHit(UPrimitiveComponent* OverlappedComponent,
 		case MS_BODY:
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body hit.")), false);
 			break;
-		case MS_LIMB:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LIMB hit.")), false);
-			break;
 		default:
 			break;
 		}

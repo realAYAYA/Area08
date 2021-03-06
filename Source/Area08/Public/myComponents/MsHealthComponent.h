@@ -26,16 +26,11 @@ public:
 	float DefaultBodyHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Health)
-	float DefaultLeftArmHealth;
+	float DefaultArmHealth;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Health)
-	float DefaultRightArmHealth;
+	float DefaultLegHealth;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Health)
-	float DefaultLeftLegHealth;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Health)
-	float DefaultRightLegHealth;
 
 	UFUNCTION()
 	void HandleTakeDamage(AActor* DamagedActor, float Damage,
@@ -50,7 +45,7 @@ protected:
 	virtual void BeginPlay() override;
 		
 public:
-	void InitHealt();
+	void InitHealth();
 
 	float HeadHealth;
 	float BodyHealth;

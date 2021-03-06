@@ -8,11 +8,8 @@
 #include "Gears/MsWeapon.h"
 
 #include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
-//#include "Area08/Area08.h"
-#define MS_HEAD	SurfaceType1
-#define MS_BODY	SurfaceType2
-#define MS_LIMB	SurfaceType3
-#define SURFACE_FLESHDEFAULT SurfaceType10
+#include "Area08/Area08.h"
+
 // Sets default values for this component's properties
 URayTestComponent::URayTestComponent()
 {
@@ -56,12 +53,6 @@ void URayTestComponent::Tracing()
 				break;
 			case MS_BODY:
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(66666), false);
-				break;
-			case MS_LIMB:
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(55555), false);
-				break;
-			case SURFACE_FLESHDEFAULT:
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(55555), false);
 				break;
 			default:
 				break;

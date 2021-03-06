@@ -14,8 +14,6 @@
 #include "Gears/MsMeleeWeapon.h"
 #include "Blueprint/UserWidget.h"
 #include "HUD/MyUserWidget.h"// Test HUD
-#include "Components/ProgressBar.h"
-#include "Components/Image.h"
 
 
 AMS::AMS() {
@@ -39,48 +37,15 @@ AMS::AMS() {
 
 }
 
-void AMS::InitHUD()
-{
-	FLinearColor HudGreen = { 0.21f,1.0f,0.8f,1.0f };
-	if (HUD) {
-		HUD->HudHead->SetColorAndOpacity(HudGreen);
-		HUD->HudBody->SetColorAndOpacity(HudGreen);
-		HUD->HudRA->SetColorAndOpacity(HudGreen);
-		HUD->HudLA->SetColorAndOpacity(HudGreen);
-		HUD->HudRL->SetColorAndOpacity(HudGreen);
-		HUD->HudLL->SetColorAndOpacity(HudGreen);
-	}
-}
-
-FLinearColor AMS::UpdateHUD()
-{
-	FLinearColor HudGreen = { 0.21f,1.0f,0.8f,1.0f };
-	FLinearColor HudYellow = { 1.0f,0.41f,0.15f,1.0f };
-	FLinearColor HudRed = { 1.0f,0,0,1.0f };
-	
-	if (this->HealthManager && this->HealthManager->BodyHealth > 0) {
-		float Val = this->HealthManager->BodyHealth;
-		if (Val >= 66.0f) {
-			return HudGreen;
-		}
-		else if (Val < 66.0f && Val >= 33.0f) {
-			return HudYellow;
-		}
-		else{
-			return HudRed;
-		}
-	}
-	return HudRed;
-}
-
 void AMS::OnHealthChanged(UMsHealthComponent* OwnerHealthComp, float Health, float HeathDelta,
 	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (bDied)
 		return;
 
-	this->UpdateHUD();
-
+	// 更新HUD
+	if(this->HUD&&this->HealthManager){this->HUD->UpdateHealth(this->HealthManager);}
+	
 	if (Health <= 0.0f && !bDied)
 	{
 		SetDeath();
@@ -106,10 +71,7 @@ void AMS::BeginPlay()
 	if (WidgetClass) {
 		HUD = CreateWidget<UMyUserWidget>(GetWorld(), WidgetClass);
 		if (HUD) {
-			if (HUD->HudBody) {
-				HUD->HudBody->ColorAndOpacityDelegate.BindDynamic(this, &AMS::UpdateHUD);// 记得UFUNCTION()
-			}
-			InitHUD();
+			HUD->Init();
 			HUD->AddToViewport();
 		}
 	}

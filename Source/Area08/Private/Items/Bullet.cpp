@@ -4,11 +4,12 @@
 #include "Items/Bullet.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/DamageType.h"
 #include "Kismet/GameplayStatics.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
 
 #include "Area08/Area08.h"
-#include "Characters/MS.h"
+#include "NumCalculation/Area08DamageType.h"
 
 ABullet::ABullet() {
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
@@ -25,6 +26,8 @@ ABullet::ABullet() {
 	MovementComp->bShouldBounce = true;
 
 	Damage = 20.0f;
+
+	DamageType=CreateDefaultSubobject<UArea08DamageType>(TEXT("DamageType"));
 }
 
 void ABullet::BeginPlay() {
@@ -45,18 +48,39 @@ void ABullet::OnHit(UPrimitiveComponent* OverlappedComponent,
 		{
 		case MS_HEAD:
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::Head);
 			break;
 		case MS_BODY:
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::Body);
 			break;
-		case MS_LIMB:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LIMB shoot.")), false);
+		case MS_LARM:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LeftArm shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::LArm);
+			break;
+		case MS_RARM:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("RightArm shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::RArm);
+			break;
+		case MS_LLEG:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LegLeg shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::LLeg);
+			break;
+		case MS_RLEG:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("RightLeg shoot.")), false);
+			DamageType->SetHitRegion(DamageRegion::RLeg);
 			break;
 		default:
 			break;
 		}
-		/*UGameplayStatics::ApplyPointDamage(HitActor, Damage,
-			this->GetActorForwardVector(), Hit, this->GetOwner()->GetInstigatorController(), this, DamageType);*/
-		this->Destroy();
+		if(DamageType->HitRegion!=DamageRegion::None)// 如果打的材质确实属于可被伤害的类型，才会造成伤害
+		{
+			UGameplayStatics::ApplyPointDamage(HitActor, Damage,
+                this->GetActorForwardVector(), Hit, this->GetOwner()->GetInstigatorController(), this, BPDamageType);
+		}
+		if(true)// 这里判断下弹种来决定是否销毁还是过穿
+		{
+			this->Destroy();
+		}
 	}
 }
