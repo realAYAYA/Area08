@@ -15,6 +15,9 @@ public:
 	// Sets default values for this component's properties
 	UMSGearManager();
 
+	/* TestFromBP*/
+	void InitFromBP();
+
 	/* Debug, BPDebug, These variables will be deleted soon*/
 	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
 	TSubclassOf<class AMsWeapon>BPMasterWeapon;

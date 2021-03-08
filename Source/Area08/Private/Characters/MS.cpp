@@ -19,8 +19,15 @@
 AMS::AMS() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	bDied = false;
+
+	// init MS status
+	bMoveable=true;
+	bStuned=false;
+	Attacking=false;
 	bParried = false;
+	bStaggered=false;
+	bDied = false;
+	
 
 	GearManager = CreateDefaultSubobject<UMSGearManager>(TEXT("GearManagement"));
 	HealthManager = CreateDefaultSubobject<UMsHealthComponent>(TEXT("HealthComponent"));
@@ -30,12 +37,51 @@ AMS::AMS() {
 	if (PunchMontageObject.Succeeded()) {
 		AttackMontage = PunchMontageObject.Object;
 	}
-	static ConstructorHelpers::FObjectFinder<UAnimMontage> ParriedMontageObject(TEXT("AnimMontage'/Game/Combat/Melee/Parried.Parried'"));
-	if (ParriedMontageObject.Succeeded()) {
-		ParriedMontage = ParriedMontageObject.Object;
+	
+	static ConstructorHelpers::FObjectFinder<UDataTable> MontageTableObject(TEXT("DataTable'/Game/Test/DataTables/CharacterBaseMontages.CharacterBaseMontages'"));
+	if (MontageTableObject.Succeeded()) {
+		MSMontageTable = MontageTableObject.Object;
 	}
 
 }
+
+bool AMS::Moveable()
+{
+	if(bMoveable&&!Attacking&&!bStuned&&!bStaggered&&!bParried)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool AMS::Runable()
+{
+	if(true)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+bool AMS::Turnable()
+{
+	if(!bStuned&&!bStaggered&&!bParried)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 
 void AMS::OnHealthChanged(UMsHealthComponent* OwnerHealthComp, float Health, float HeathDelta,
 	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
@@ -108,6 +154,7 @@ void AMS::StartFire()
 		else
 		{
 			Melee();
+			Attacking=true;
 			PlayAnimMontage(AttackMontage, 1.0f);
 		}
 	}
@@ -168,18 +215,60 @@ void AMS::PlayParriedMontage(AMsMeleeWeapon* Weapon, float val)
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Begin Parried")), false);
 	}
 	bParried = true;// 在此处打开被弹反的状态变量，在之后的动画通知中会关闭
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Parried End")), false);
-	PlayAnimMontage(ParriedMontage, 1.0f);
+
+	FWeaponMontage* RowMontage=MSMontageTable->FindRow<FWeaponMontage>(FName(TEXT("Parried")),TEXT("ParriedMontage"));
+	if(RowMontage&&RowMontage->Montage)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Parried End")), false);
+		PlayAnimMontage(RowMontage->Montage, RowMontage->Duration);
+	}
 }
 
-//void AMS::OnParried()
-//{
-//	if (ParriedMontage) {
-//		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(123), false);
-//		PlayAnimMontage(ParriedMontage, 2.0f);
-//	}
-//}
+void AMS::MoveForward(float Val)
+{
+	if (Val != 0.0f&&Moveable())
+	{
+		// add movement in that direction
+		AddMovementInput(GetActorForwardVector(), Val);
+	}
+}
 
+void AMS::MoveRight(float Val)
+{
+	if (Val != 0.0f&&Moveable())
+	{
+		// add movement in that direction
+		AddMovementInput(GetActorRightVector(), Val);
+	}
+}
+
+void AMS::TurnAtRate(float Rate)
+{
+	// calculate delta for this frame from the rate information
+	//RotatorComponent->Turn(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	if(Rate!=0.0f&&Turnable())
+	{
+		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+	}
+}
+
+void AMS::LookUpAtRate(float Rate)
+{
+	// calculate delta for this frame from the rate information
+	//RotatorComponent->LookUp(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	if(Rate!=0.0f&&Turnable())
+	{
+		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+	}
+}
+
+void AMS::Roll(float Rate)
+{
+	if(Rate!=0.0f&&Turnable())
+	{
+	//RotatorComponent->Roll(Rate * BaseRollRate * GetWorld()->GetDeltaSeconds());
+	}
+}
 
 // Called every frame
 void AMS::Tick(float DeltaTime)
@@ -197,6 +286,17 @@ void AMS::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Melee", IE_Pressed, this, &AMS::Melee);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AMS::StartFire);
 	PlayerInputComponent->BindAction("Fire", IE_Released, this, &AMS::StopFire);
+
+	// Bind movement events
+	PlayerInputComponent->BindAxis("MoveForward", this, &AMS::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AMS::MoveRight);
+
+	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
+	// "turn" handles devices that provide an absolute delta, such as a mouse.
+	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
+	PlayerInputComponent->BindAxis("Turn", this, &AMS::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUp", this, &AMS::LookUpAtRate);
+	PlayerInputComponent->BindAxis("Roll", this, &AMS::Roll);
 
 }
 

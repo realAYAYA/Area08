@@ -16,7 +16,6 @@ AMsMeleeWeapon::AMsMeleeWeapon() {
 	}
 	AttackBox->SetCollisionProfileName("Weapon");
 	AttackBox->SetNotifyRigidBodyCollision(true);// 生成撞击事件，不然无法触发碰撞
-	AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	AttackBox->SetBoxExtent(FVector(5));
 
 	StaggeredBox = CreateDefaultSubobject<UBoxComponent>("BlockedBoxComp");
@@ -25,7 +24,6 @@ AMsMeleeWeapon::AMsMeleeWeapon() {
 	}
 	StaggeredBox->SetCollisionProfileName("WeaponOther");
 	StaggeredBox->SetNotifyRigidBodyCollision(true);
-	StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	StaggeredBox->SetBoxExtent(FVector(5));
 
 	ParriedBox = CreateDefaultSubobject<UBoxComponent>("ParriedBoxComp");
@@ -34,7 +32,6 @@ AMsMeleeWeapon::AMsMeleeWeapon() {
 	}
 	ParriedBox->SetCollisionProfileName("WeaponOther");
 	ParriedBox->SetNotifyRigidBodyCollision(true);
-	ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	ParriedBox->SetBoxExtent(FVector(5));
 }
 
@@ -69,16 +66,13 @@ void AMsMeleeWeapon::OnParry(UPrimitiveComponent* OverlappedComponent,
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)// 被弹反要做的事情
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Weapon Notify activated.")), false);
 	OnParriedChanged.Broadcast(this, 0);// 委托
 }
 
 void AMsMeleeWeapon::OnStaggered(UPrimitiveComponent* OverlappedComponent, 
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
 	bool bFromSweep, const FHitResult& SweepResult)// 武器弹刀要做的事情
-{
-	//this->MeleeBreak();// 先将攻击过程打断
-	
+{	
 	//bStaggered.Broadcast(this, 0.0f, 0.0f, 0.0f, InstigatedBy, DamageCauser);// 委托
 }
 
@@ -133,4 +127,9 @@ void AMsMeleeWeapon::BeginPlay()
 	AttackBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnHit);
 	StaggeredBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnParry);
 	ParriedBox->OnComponentBeginOverlap.AddDynamic(this, &AMsMeleeWeapon::OnParry);
+
+	// 如果碰撞开关放在构造函数里，有时会失效，可能是蓝图继承的关系
+	AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }

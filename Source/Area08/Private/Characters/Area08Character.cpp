@@ -43,44 +43,6 @@ void AArea08Character::BeginPlay()
 	
 }
 
-void AArea08Character::MoveForward(float Val)
-{
-	if (Val != 0.0f)
-	{
-		// add movement in that direction
-		AddMovementInput(GetActorForwardVector(), Val);
-	}
-}
-
-void AArea08Character::MoveRight(float Val)
-{
-	if (Val != 0.0f)
-	{
-		// add movement in that direction
-		AddMovementInput(GetActorRightVector(), Val);
-	}
-}
-
-void AArea08Character::TurnAtRate(float Rate)
-{
-	// calculate delta for this frame from the rate information
-	//RotatorComponent->Turn(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AArea08Character::LookUpAtRate(float Rate)
-{
-	// calculate delta for this frame from the rate information
-	//RotatorComponent->LookUp(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
-}
-
-void AArea08Character::Roll(float Rate)
-{
-	//RotatorComponent->Roll(Rate * BaseRollRate * GetWorld()->GetDeltaSeconds());
-
-}
-
 // Called to bind functionality to input
 void AArea08Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -88,14 +50,4 @@ void AArea08Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// set up gameplay key bindings
 	check(PlayerInputComponent);
 
-	// Bind movement events
-	PlayerInputComponent->BindAxis("MoveForward", this, &AArea08Character::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AArea08Character::MoveRight);
-
-	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
-	// "turn" handles devices that provide an absolute delta, such as a mouse.
-	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
-	PlayerInputComponent->BindAxis("Turn", this, &AArea08Character::TurnAtRate);
-	PlayerInputComponent->BindAxis("LookUp", this, &AArea08Character::LookUpAtRate);
-	PlayerInputComponent->BindAxis("Roll", this, &AArea08Character::Roll);
 }

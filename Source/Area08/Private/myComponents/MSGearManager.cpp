@@ -23,17 +23,9 @@ UMSGearManager::UMSGearManager()
 	RightLegSocketName = "RightLegSocket";
 }
 
-// Called when the game starts
-void UMSGearManager::BeginPlay()
+void UMSGearManager::InitFromBP()
 {
-	Super::BeginPlay();
-	// ...
-	SetMasterWeapon();
-	SetBodyGears();
-}
-
-void UMSGearManager::SetMasterWeapon()
-{
+	// MasterWeapon
 	ACharacter* Owner = Cast<ACharacter>(GetOwner());
 	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
 		FActorSpawnParameters SpawnParams;// 创建生成参数
@@ -48,11 +40,8 @@ void UMSGearManager::SetMasterWeapon()
 			}
 		}
 	}
-}
-
-void UMSGearManager::SetOffhandWeapon()
-{
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
+	
+	// OffHandWeapon
 	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -62,11 +51,8 @@ void UMSGearManager::SetOffhandWeapon()
 			OffhandWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
 		}
 	}
-}
 
-void UMSGearManager::SetBodyGears()
-{
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
+	// SpecialGear
 	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -91,6 +77,31 @@ void UMSGearManager::SetBodyGears()
 			RightLegGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightLegSocketName);
 		}
 	}
+	
+}
+
+
+// Called when the game starts
+void UMSGearManager::BeginPlay()
+{
+	Super::BeginPlay();
+	// ...
+	InitFromBP();
+}
+
+void UMSGearManager::SetMasterWeapon()
+{
+	
+}
+
+void UMSGearManager::SetOffhandWeapon()
+{
+	
+}
+
+void UMSGearManager::SetBodyGears()
+{
+	
 }
 
 void UMSGearManager::DropMasterWeapon()
@@ -104,7 +115,11 @@ void UMSGearManager::DropMasterWeapon()
 
 void UMSGearManager::DropOffhandWeapon()
 {
-
+	if (OffhandWeapon) {
+		this->OffhandWeapon->SetOwner(nullptr);
+		this->OffhandWeapon->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		this->OffhandWeapon = nullptr;
+	}
 }
 
 void UMSGearManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
