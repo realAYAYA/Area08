@@ -11,15 +11,12 @@ AMsWeapon::AMsWeapon() {
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComp"));
 	MeshComponent->SetupAttachment(Root);
 
-	static ConstructorHelpers::FObjectFinder<USoundBase> HitSoundObject(TEXT("SoundWave'/Game/Combat/Audios/AttackSound.AttackSound'"));
-	if (HitSoundObject.Succeeded()) {
-		UnKnowSound = HitSoundObject.Object;
-	}
-
 	AudioPlayComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioPlayComp"));
 	AudioPlayComponent->SetupAttachment(RootComponent);
 	AudioPlayComponent->bAutoActivate = false;// Close Autoplay
-	if (AudioPlayComponent) {
-		AudioPlayComponent->SetSound(UnKnowSound);
-	}
+}
+
+void AMsWeapon::PlayEffect()
+{
+	
 }

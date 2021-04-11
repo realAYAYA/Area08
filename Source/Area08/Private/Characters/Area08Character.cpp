@@ -2,15 +2,11 @@
 
 
 #include "Characters/Area08Character.h"
-//#include "Animation/AnimInstance.h"
-//#include "GameFramework/InputSettings.h"
-//#include "Kismet/GameplayStatics.h"
-//#include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "GameFramework/PlayerController.h"
 #include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "PhysicsEngine/PhysicsThrusterComponent.h"
+
 
 // Sets default values
 AArea08Character::AArea08Character()
@@ -23,9 +19,14 @@ AArea08Character::AArea08Character()
 	BaseLookUpRate = 45.0f;
 	BaseRollRate = 45.0f;
 
+	//InitCamera
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComponent"));
+	SpringArm->bUsePawnControlRotation = true;
+	SpringArm->SetupAttachment(RootComponent);
+	
 	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("MsCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetMesh());
+	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	FirstPersonCameraComponent->SetupAttachment(SpringArm);
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-39.56f, 1.75f, 64.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 

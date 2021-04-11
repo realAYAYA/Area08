@@ -34,6 +34,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ParametersCompensation)
 	float RollRate;
 
+	class ACharacter* Holder;// 保存武器的持有者，方便在武器攻击的时调用人物播放动画
+	void SetHolder(ACharacter* Val){this->Holder=Val;}
+
 	virtual void Activate() {};
 	virtual void Breaken() {};
 };

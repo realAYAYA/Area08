@@ -4,6 +4,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+
 #include "UObject/ConstructorHelpers.h"// 用于通过资源引用来调用资源
 
 #include "myComponents/MSGearManager.h"
@@ -15,18 +16,13 @@
 #include "Blueprint/UserWidget.h"
 #include "HUD/MyUserWidget.h"// Test HUD
 
-
 AMS::AMS() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// init MS status
-	bMoveable=true;
-	bStuned=false;
-	Attacking=false;
-	bParried = false;
-	bStaggered=false;
-	bDied = false;
+	myStatus=MsStatus::Normal;
+	DefaultDodgeTime=5.0f;
 	
 
 	GearManager = CreateDefaultSubobject<UMSGearManager>(TEXT("GearManagement"));
@@ -47,7 +43,7 @@ AMS::AMS() {
 
 bool AMS::Moveable()
 {
-	if(bMoveable&&!Attacking&&!bStuned&&!bStaggered&&!bParried)
+	if(myStatus==MsStatus::Normal||myStatus==MsStatus::Moving)
 	{
 		return true;
 	}
@@ -69,10 +65,9 @@ bool AMS::Runable()
 	}
 }
 
-
 bool AMS::Turnable()
 {
-	if(!bStuned&&!bStaggered&&!bParried)
+	if(myStatus==MsStatus::Normal||myStatus==MsStatus::Moving)
 	{
 		return true;
 	}
@@ -82,19 +77,21 @@ bool AMS::Turnable()
 	}
 }
 
-
 void AMS::OnHealthChanged(UMsHealthComponent* OwnerHealthComp, float Health, float HeathDelta,
-	const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+                          const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (bDied)
+	if (myStatus==MsStatus::bDied)
 		return;
-
 	// 更新HUD
 	if(this->HUD&&this->HealthManager){this->HUD->UpdateHealth(this->HealthManager);}
 	
-	if (Health <= 0.0f && !bDied)
+	if(HasAuthority())
 	{
-		SetDeath();
+		if (Health <= 0.0f && myStatus!=MsStatus::bDied)
+		{
+			myStatus=MsStatus::bDied;
+			SetDeath();
+		}
 	}
 }
 
@@ -123,44 +120,18 @@ void AMS::BeginPlay()
 	}
 }
 
-void AMS::Stuned(bool Val)
-{
-
-}
-
-void AMS::DisablePlayerInput(bool Val)
-{
-	//this->DisableInput();
-}
-
-void AMS::DiableMsMovement(bool Val)
-{
-
-}
-
 void AMS::TestTouch()
 {
 	// calculate delta for this frame from the rate information
-	
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("TestTouching...")), false);
 	LineTracer->Tracing();
 }
 
 void AMS::StartFire()
 {
-	if (GearManager && GearManager->MasterWeapon) {
-		if (GearManager->MasterWeapon->Type < WeaponType::MS_Melee) {
-			GearManager->MasterWeapon->StartFire();
-		}
-		else
-		{
-			Melee();
-			Attacking=true;
-			PlayAnimMontage(AttackMontage, 1.0f);
-		}
-	}
-	else
+	if (this->GearManager!=nullptr)
 	{
-		PunchWithWeapon();
+		this->GearManager->UseMasterWeapon();
 	}
 }
 
@@ -173,16 +144,6 @@ void AMS::StopFire()
 
 void AMS::Melee()
 {
-	// 令武器设置攻击
-
-	// 让武器播放特有的攻击动作
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= WeaponType::MS_Melee) {
-		GearManager->MasterWeapon->Melee();
-	}
-}
-
-void AMS::PunchWithWeapon()
-{
 	
 }
 
@@ -193,10 +154,8 @@ void AMS::RFire()
 
 void AMS::SetDeath()
 {
-	if (bDied)
+	if (myStatus!=MsStatus::bDied)
 		return;
-
-	bDied = true;// 角色死亡并令其控制瘫痪
 
 	GetMovementComponent()->StopMovementImmediately();
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -207,19 +166,11 @@ void AMS::SetDeath()
 
 void AMS::PlayParriedMontage(AMsMeleeWeapon* Weapon, float val)
 {
-	if (bParried) {
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Error Parried Has opened")), false);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Begin Parried")), false);
-	}
-	bParried = true;// 在此处打开被弹反的状态变量，在之后的动画通知中会关闭
-
+	myStatus=MsStatus::bDied;// 在此处打开被弹反的状态变量，在之后的动画通知中会关闭
+	
 	FWeaponMontage* RowMontage=MSMontageTable->FindRow<FWeaponMontage>(FName(TEXT("Parried")),TEXT("ParriedMontage"));
 	if(RowMontage&&RowMontage->Montage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Parried End")), false);
 		PlayAnimMontage(RowMontage->Montage, RowMontage->Duration);
 	}
 }
@@ -242,12 +193,57 @@ void AMS::MoveRight(float Val)
 	}
 }
 
+void AMS::SprintBegin()
+{
+	// if (Stamina >= StaminaCost) {
+	// 	IsSprinting = true;
+	{
+		GetCharacterMovement()->MaxWalkSpeed = 2200;
+		//GetWorldTimerManager().SetTimer(SprintTimerHandle, this, &AMS::SprintDrain, 0.5f, true);
+	}
+}
+
+void AMS::SprintEnd()
+{
+	//IsSprinting = false;
+	GetCharacterMovement()->MaxWalkSpeed = 600;
+	//GetWorldTimerManager().ClearTimer(SprintTimerHandle);
+}
+
+void AMS::Dodge()
+{
+	if(Moveable())
+	{
+		DodgeTime=DefaultDodgeTime;// 初始化闪避时间
+		myStatus=MsStatus::Dodging;
+		// 播放闪避动作
+		//GetWorldTimerManager().SetTimer(DodgeTimerHandle, this, &AMS::DodgeDrain, 0.5f, true);
+	}
+}
+
+void AMS::Tick_Dodge(float DeltaTime)
+{
+	// 在Tick循环中实现丝滑的闪避位移
+	if(myStatus!=MsStatus::Dodging)
+		return;
+	if(DodgeTime>0)
+	{
+		DodgeTime=DodgeTime-DeltaTime>0?DodgeTime-DeltaTime:0;
+		AddMovementInput(GetActorForwardVector(), 2);
+		//AddActorLocalOffset(GetActorForwardVector()*1,true);
+	}
+	else
+	{
+		myStatus=MsStatus::Normal;
+	}
+}
+
 void AMS::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	//RotatorComponent->Turn(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 	if(Rate!=0.0f&&Turnable())
-	{
+	{		
 		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 	}
 }
@@ -267,6 +263,8 @@ void AMS::Roll(float Rate)
 	if(Rate!=0.0f&&Turnable())
 	{
 	//RotatorComponent->Roll(Rate * BaseRollRate * GetWorld()->GetDeltaSeconds());
+		AddControllerRollInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+		GetFirstPersonCameraComponent();
 	}
 }
 
@@ -275,6 +273,7 @@ void AMS::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	Tick_Dodge(DeltaTime);
 }
 
 void AMS::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -291,6 +290,10 @@ void AMS::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMS::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMS::MoveRight);
 
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMS::SprintBegin);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMS::SprintEnd);
+	PlayerInputComponent->BindAction("Dodge", IE_Pressed, this, &AMS::Dodge);
+
 	// We have 2 versions of the rotation bindings to handle different kinds of devices differently
 	// "turn" handles devices that provide an absolute delta, such as a mouse.
 	// "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
@@ -303,7 +306,5 @@ void AMS::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AMS::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME_CONDITION(AMS, bParried, COND_SkipOwner);
-	DOREPLIFETIME_CONDITION(AMS, bDied, COND_SkipOwner);
-	DOREPLIFETIME_CONDITION(AMS, bStaggered, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(AMS, myStatus, COND_SkipOwner);
 }

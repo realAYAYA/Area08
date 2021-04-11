@@ -4,9 +4,9 @@
 #include "Items/Bullet.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "GameFramework/DamageType.h"
-#include "Kismet/GameplayStatics.h"
+#include "Kismet/GameplayStatics.h"// 用于播放特效粒子动画
 #include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
+#include "Net/UnrealNetwork.h"
 
 #include "Area08/Area08.h"
 #include "NumCalculation/Area08DamageType.h"
@@ -27,7 +27,15 @@ ABullet::ABullet() {
 
 	Damage = 20.0f;
 
-	DamageType=CreateDefaultSubobject<UArea08DamageType>(TEXT("DamageType"));
+	DamageType=CreateDefaultSubobject<UArea08DamageType>(TEXT("DamageType" ));
+
+	// Network
+	// --------------------------------
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	NetUpdateFrequency=66;
+	MinNetUpdateFrequency=33;
+
 }
 
 void ABullet::BeginPlay() {
@@ -42,45 +50,83 @@ void ABullet::OnHit(UPrimitiveComponent* OverlappedComponent,
 	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
 	bool bFromSweep, const FHitResult& Hit)
 {
+	if(GetLocalRole()<ROLE_Authority)
+	{
+		return;// 只有服务器端的子弹命中才可以造成伤害，客户端则不允许
+	}
 	if (HitActor) {
-		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
-		switch (SurfaceType)
+		EPhysicalSurface tempSurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+
+		SetDamageType(tempSurfaceType);// 设置子弹的伤害部位
+		
+		/* 播放特效、音效**/
+		PlayHitEffects(tempSurfaceType,Hit.ImpactPoint,Hit.ImpactNormal.Rotation());
+		if(GetLocalRole()==ROLE_Authority)// 子弹命中特效同步到客户端
 		{
-		case MS_HEAD:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::Head);
-			break;
-		case MS_BODY:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::Body);
-			break;
-		case MS_LARM:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LeftArm shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::LArm);
-			break;
-		case MS_RARM:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("RightArm shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::RArm);
-			break;
-		case MS_LLEG:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("LegLeg shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::LLeg);
-			break;
-		case MS_RLEG:
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("RightLeg shoot.")), false);
-			DamageType->SetHitRegion(DamageRegion::RLeg);
-			break;
-		default:
-			break;
+			HitScanTrace.HitPoint=Hit.ImpactPoint;
+			HitScanTrace.HitRotation=Hit.ImpactNormal;
 		}
-		if(DamageType->HitRegion!=DamageRegion::None)// 如果打的材质确实属于可被伤害的类型，才会造成伤害
+		
+		// 服务器判中才会造成伤害，且如果打的材质确实属于可被伤害的类型，才会造成伤害
+		if(HasAuthority() && DamageType->HitRegion!=DamageRegion::None)
 		{
+			// 这里做输出测试
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Bullet::Hit.")), false);
 			UGameplayStatics::ApplyPointDamage(HitActor, Damage,
-                this->GetActorForwardVector(), Hit, this->GetOwner()->GetInstigatorController(), this, BPDamageType);
+				this->GetActorForwardVector(), Hit, this->GetOwner()->GetInstigatorController(), this, BPDamageType);
 		}
+		
 		if(true)// 这里判断下弹种来决定是否销毁还是过穿
 		{
 			this->Destroy();
 		}
 	}
+}
+
+void ABullet::PlayHitEffects(EPhysicalSurface tempSurfaceType,const FVector& HitPoint,const FRotator& HitRotation)
+{
+	SelectEffect=HitFleshEffect;
+	
+	if(SelectEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),SelectEffect,HitPoint,HitRotation);
+	}
+}
+
+void ABullet::SetDamageType(const EPhysicalSurface& mySurfaceType)
+{
+	switch (mySurfaceType)
+	{
+	case MS_HEAD:
+		DamageType->SetHitRegion(DamageRegion::Head);
+		break;
+	case MS_BODY:
+		DamageType->SetHitRegion(DamageRegion::Body);
+		break;
+	case MS_LARM:
+		DamageType->SetHitRegion(DamageRegion::LArm);
+		break;
+	case MS_RARM:
+		DamageType->SetHitRegion(DamageRegion::RArm);
+		break;
+	case MS_LLEG:
+		DamageType->SetHitRegion(DamageRegion::LLeg);
+		break;
+	case MS_RLEG:
+		DamageType->SetHitRegion(DamageRegion::RLeg);
+		break;
+	default:
+		break;
+	}
+}
+
+void ABullet::OnRep_Hit()
+{
+	PlayHitEffects(SurfaceType1,HitScanTrace.HitPoint,HitScanTrace.HitRotation.Rotation());
+}
+
+void ABullet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);	
+	DOREPLIFETIME_CONDITION(ABullet,HitScanTrace,COND_SkipOwner);
 }

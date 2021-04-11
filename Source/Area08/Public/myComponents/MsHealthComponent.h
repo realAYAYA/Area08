@@ -9,7 +9,6 @@
 // 添加自定义事件,用的时候放到顶上
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_SixParams(FOnHealthChangedSignature, class UMsHealthComponent*, HealthComp, float, Health, float, HeathDelta, const class UDamageType*, DamageType, class AController*, InstigatedBy, AActor*, DamageCauser);
 
-
 UCLASS( ClassGroup=(MS), meta=(BlueprintSpawnableComponent) )
 class AREA08_API UMsHealthComponent : public UActorComponent
 {
@@ -46,12 +45,19 @@ protected:
 		
 public:
 	void InitHealth();
-
+	
+	UPROPERTY(Replicated)
 	float HeadHealth;
+	UPROPERTY(Replicated)
 	float BodyHealth;
+	UPROPERTY(Replicated)
 	float LeftArmHealth;
+	UPROPERTY(Replicated)
 	float RightArmHealth;
+	UPROPERTY(Replicated)
 	float LeftLegHealth;
+	UPROPERTY(Replicated)
 	float RightLegHealth;
 
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

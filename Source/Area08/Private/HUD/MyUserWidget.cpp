@@ -26,8 +26,8 @@ void UMyUserWidget::UpdateHealth(const UMsHealthComponent* HealthComp)
 	FLinearColor Red = { 1.0f,0,0,1.0f };
 	if(HealthComp)
 	{// 更新各个组件的血量显示
-		float tempVal;
-		if(this->HudHead)
+		float tempVal=1.0f;
+		if(this->HudHead&&HealthComp)
 		{
 			tempVal=HealthComp->HeadHealth/HealthComp->DefaultHeadHealth;
 			if(tempVal>=0.7f){this->HudHead->SetColorAndOpacity((Green));}

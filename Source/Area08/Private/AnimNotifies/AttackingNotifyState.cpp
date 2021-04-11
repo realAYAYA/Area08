@@ -12,7 +12,7 @@ void UAttackingNotifyState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimS
 	if (MeshComp) {
 		AMS* C = Cast<AMS>(MeshComp->GetOwner());
 		if (C && C->GearManager && C->GearManager->MasterWeapon) {
-			//C->Attacking=true;
+			C->myStatus=MsStatus::Attacking;
 		}
 	}
 }
@@ -22,7 +22,7 @@ void UAttackingNotifyState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSeq
 	if (MeshComp) {
 		AMS* C = Cast<AMS>(MeshComp->GetOwner());
 		if (C && C->GearManager && C->GearManager->MasterWeapon) {
-			C->Attacking=false;
+			C->myStatus=MsStatus::Normal;
 		}
 	}
 }

@@ -40,9 +40,9 @@ void AMsMeleeWeapon::OnHit(UPrimitiveComponent* OverlappedComponent,
 	bool bFromSweep, const FHitResult& Hit)// 武器命中要做的事情
 {
 	if (HitActor) {
-		EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		EPhysicalSurface tempSurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Hit generate")), false);
-		switch (SurfaceType)
+		switch (tempSurfaceType)
 		{
 		case MS_HEAD:
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head hit.")), false);

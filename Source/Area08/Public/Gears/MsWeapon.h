@@ -66,10 +66,9 @@ public:
 
 	class UAudioComponent* AudioPlayComponent;// 声音播放组件
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Assets", meta = (AllowPrivateAccess = "true"))
-	USoundBase* UnKnowSound;
-
 public:
+	void PlayEffect();
+	
 	// 枪械武器的方法接口
 	virtual void StartFire() {}
 	virtual void StopFire() {}

@@ -2,6 +2,7 @@
 
 
 #include "myComponents/MsHealthComponent.h"
+#include "Net/UnrealNetwork.h"
 
 #include"NumCalculation/Area08DamageType.h"
 #include"Items/Bullet.h"
@@ -14,6 +15,11 @@ UMsHealthComponent::UMsHealthComponent()
 	DefaultBodyHealth = 100.0f;
 	DefaultArmHealth=60.0f;
 	DefaultLegHealth=60.0f;
+
+	{
+		//this->SetNetAddressable();//Make DSO components net addressable
+		this->SetIsReplicated(true);// Enable replication by default
+	}
 }
 
 
@@ -82,7 +88,21 @@ void UMsHealthComponent::BeginPlay()
 
 void UMsHealthComponent::InitHealth()
 {
+	HeadHealth=DefaultHeadHealth;
 	BodyHealth = DefaultBodyHealth;
 	LeftArmHealth=RightArmHealth=DefaultArmHealth;
 	LeftLegHealth=RightLegHealth=DefaultLegHealth;
+}
+
+void UMsHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,HeadHealth,COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,BodyHealth,COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,LeftArmHealth,COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,RightArmHealth,COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,LeftLegHealth,COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(UMsHealthComponent,RightLegHealth,COND_SkipOwner);
+
 }

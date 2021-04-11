@@ -6,4 +6,8 @@
 ASpecialGear::ASpecialGear() {
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshComponent"));
 	RootComponent = MeshComponent;
+
+	{
+		SetReplicates(true);
+	}
 }

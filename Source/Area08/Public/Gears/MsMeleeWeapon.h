@@ -27,6 +27,9 @@ public:
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
 	//UParticleSystem* HitEffect;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Assets", meta = (AllowPrivateAccess = "true"))
+    USoundBase* UnKnowSound;
 
 	/* 攻击，可被弹刀，被招架 判定开启*/
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))

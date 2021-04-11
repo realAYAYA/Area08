@@ -40,6 +40,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
 	TSubclassOf<ASpecialGear> BPRightLegGear;
+
+	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
+	TSubclassOf<ASpecialGear> BPBackPack;
 //
 //	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Socket")
 //	TArray<class AMsDevice*> BPMsDevices;
@@ -82,7 +85,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-
+	void UseMasterWeapon();
+	
 	void SetMasterWeapon();
 	void SetOffhandWeapon();
 	void SetBodyGears();

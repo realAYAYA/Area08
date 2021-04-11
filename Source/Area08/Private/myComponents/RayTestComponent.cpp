@@ -42,19 +42,11 @@ void URayTestComponent::Tracing()
 
 		if (GetWorld()->LineTraceSingleByChannel(Hit, BeginLocation, TraceEnd, ECC_Visibility, QueryParam)) {
 			AActor* HitActor = Hit.GetActor();
-			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
-			switch (SurfaceType)
+			EPhysicalSurface tempSurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+			switch (tempSurfaceType)
 			{
 			case SurfaceType_Default:
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(0), false);
-				break;
-			case MS_HEAD:
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(88888), false);
-				break;
-			case MS_BODY:
-				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString::SanitizeFloat(66666), false);
-				break;
-			default:
 				break;
 			}
 		}

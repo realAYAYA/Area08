@@ -21,41 +21,35 @@ UMSGearManager::UMSGearManager()
 	RightHandSocketName = "RightHandSocket";
 	LeftLegSocketName = "LeftLegSocket";
 	RightLegSocketName = "RightLegSocket";
+
+	//this->SetNetAddressable();//Make DSO components net addressable
+	this->SetIsReplicated(true);// Enable replication by default
 }
 
 void UMSGearManager::InitFromBP()
 {
 	// MasterWeapon
 	ACharacter* Owner = Cast<ACharacter>(GetOwner());
-	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
+	if (Owner && Owner->GetLocalRole() == ROLE_Authority)
+	{
 		FActorSpawnParameters SpawnParams;// 创建生成参数
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;// 设置参数：有碰撞时仍要生成
 		MasterWeapon = GetWorld()->SpawnActor<AMsWeapon>(BPMasterWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (MasterWeapon) {
 			MasterWeapon->SetOwner(Owner);
 			MasterWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
-
-			if (MasterWeapon->Type >= WeaponType::MS_Melee) {
-
-			}
+			MasterWeapon->SetHolder(Owner);
 		}
-	}
 	
-	// OffHandWeapon
-	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		// OffHandWeapon
 		OffhandWeapon = GetWorld()->SpawnActor<AMsWeapon>(BPOffhandWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (OffhandWeapon) {
 			OffhandWeapon->SetOwner(Owner);
 			OffhandWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
+			OffhandWeapon->SetHolder(Owner);
 		}
-	}
-
-	// SpecialGear
-	if (Owner && Owner->GetLocalRole() == ROLE_Authority) {
-		FActorSpawnParameters SpawnParams;
-		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		
+		// SpecialGear
 		LeftHandGear = GetWorld()->SpawnActor<ASpecialGear>(BPLeftHandGear, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		RightHandGear = GetWorld()->SpawnActor<ASpecialGear>(BPRightHandGear, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		LeftLegGear = GetWorld()->SpawnActor<ASpecialGear>(BPLeftLegGear, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
@@ -63,30 +57,43 @@ void UMSGearManager::InitFromBP()
 		if (LeftHandGear) {
 			LeftHandGear->SetOwner(Owner);
 			LeftHandGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandSocketName);
+			LeftHandGear->SetHolder(Owner);
 		}
 		if (RightHandGear) {
 			RightHandGear->SetOwner(Owner);
 			RightHandGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocketName);
+			RightHandGear->SetHolder(Owner);
 		}
 		if (LeftLegGear) {
 			LeftLegGear->SetOwner(Owner);
 			LeftLegGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftLegSocketName);
+			LeftLegGear->SetHolder(Owner);
 		}
 		if (RightLegGear) {
 			RightLegGear->SetOwner(Owner);
 			RightLegGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightLegSocketName);
+			RightLegGear->SetHolder(Owner);
 		}
 	}
 	
 }
-
 
 // Called when the game starts
 void UMSGearManager::BeginPlay()
 {
 	Super::BeginPlay();
 	// ...
+
 	InitFromBP();
+
+}
+
+void UMSGearManager::UseMasterWeapon()
+{
+	if(this->MasterWeapon&&this->MasterWeapon->Type < WeaponType::MS_Melee)
+	{
+		this->MasterWeapon->StartFire();
+	}
 }
 
 void UMSGearManager::SetMasterWeapon()

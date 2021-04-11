@@ -15,10 +15,13 @@ public:
 	AArea08Character();
 
 	/** First person camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	class UCameraComponent* FirstPersonCameraComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+	class USpringArmComponent* SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = Force, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditDefaultsOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	class UPhysicsThrusterComponent* GravityManager;
 
 protected:
@@ -44,9 +47,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = BaseParameters)
 	float BaseMoveJetSpeed;
-
-
-	bool bMovementable;
 
 public:
 	// Called to bind functionality to input
