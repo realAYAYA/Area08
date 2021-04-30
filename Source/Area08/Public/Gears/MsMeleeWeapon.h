@@ -21,32 +21,7 @@ class AREA08_API AMsMeleeWeapon : public AMsWeapon
 public:
 	AMsMeleeWeapon();
 
-	/* 武器特效*/
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	//UParticleSystem* MuzzleEffect;
-
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	//UParticleSystem* HitEffect;
-	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Assets", meta = (AllowPrivateAccess = "true"))
-    USoundBase* UnKnowSound;
-
-	/* 攻击，可被弹刀，被招架 判定开启*/
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* AttackBox;// 攻击判断盒子
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* StaggeredBox;// 被弹刀判定盒子
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* ParriedBox;// 被招架判, 弹刀定盒子
-
-	/* 人物指定武器动画，在特定条件下使用人物播放*/
-	// 攻击动画 // 被弹反动画// 被弹刀动画
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
-	USoundBase* HitSound;
-
+	/** 近战攻击部分，可被弹刀，被招架 判定开启*/
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* OverlappedComponent,
 		AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex,
@@ -78,4 +53,31 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	/* 武器特效*/
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	//UParticleSystem* MuzzleEffect;
+
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	//UParticleSystem* HitEffect;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Assets", meta = (AllowPrivateAccess = "true"))
+	USoundBase* UnKnowSound;
+
+	/** 近战攻击部分，可被弹刀，被招架 判定开启*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* AttackBox;// 攻击判断盒子
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* StaggeredBox;// 被弹刀判定盒子
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	class UBoxComponent* ParriedBox;// 被招架判, 弹刀定盒子
+
+	/* 人物指定武器动画，在特定条件下使用人物播放*/
+	// 攻击动画 // 被弹反动画// 被弹刀动画
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Melee", meta = (AllowPrivateAccess = "true"))
+	USoundBase* HitSound;
 };

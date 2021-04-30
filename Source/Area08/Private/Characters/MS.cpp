@@ -4,6 +4,7 @@
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 #include "UObject/ConstructorHelpers.h"// 用于通过资源引用来调用资源
 
@@ -22,8 +23,8 @@ AMS::AMS() {
 
 	// init MS status
 	myStatus=MsStatus::Normal;
+	myDriveMode=DriveMode::Walk;
 	DefaultDodgeTime=5.0f;
-	
 
 	GearManager = CreateDefaultSubobject<UMSGearManager>(TEXT("GearManagement"));
 	HealthManager = CreateDefaultSubobject<UMsHealthComponent>(TEXT("HealthComponent"));
@@ -137,8 +138,8 @@ void AMS::StartFire()
 
 void AMS::StopFire()
 {
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type != WeaponType::MS_Melee) {
-		GearManager->MasterWeapon->StopFire();
+	if (this->GearManager!=nullptr) {
+		GearManager->StopMasterWeapon();
 	}
 }
 
@@ -179,8 +180,17 @@ void AMS::MoveForward(float Val)
 {
 	if (Val != 0.0f&&Moveable())
 	{
-		// add movement in that direction
-		AddMovementInput(GetActorForwardVector(), Val);
+		// // add movement in that direction
+		// const FVector UpDirection = GetActorUpVector();
+		// const FVector CameraForward = this->GetSpringArm()->GetForwardVector();
+		// const float Dot = FVector::DotProduct(UpDirection, CameraForward);
+		//
+		// if (FMath::Abs(Dot) < 1 - SMALL_NUMBER)
+		// {
+		// 	CurrentForwardDirection = FVector::VectorPlaneProject(CameraForward, GetActorUpVector());
+		// }
+	
+		AddMovementInput(GetActorForwardVector(),Val);
 	}
 }
 
@@ -188,9 +198,17 @@ void AMS::MoveRight(float Val)
 {
 	if (Val != 0.0f&&Moveable())
 	{
-		// add movement in that direction
-		AddMovementInput(GetActorRightVector(), Val);
-	}
+		// const FVector UpDirection = GetActorUpVector();
+		// const FVector CameraRight = this->GetSpringArm()->GetRightVector();
+		// const float Dot = FVector::DotProduct(UpDirection, CameraRight);
+		//
+		// if (FMath::Abs(Dot) < 1 - SMALL_NUMBER)
+		// {
+		// 	CurrentRightDirection = FVector::VectorPlaneProject(CameraRight, UpDirection);
+		// }
+	
+		AddMovementInput(GetActorRightVector(),Val);
+	}	
 }
 
 void AMS::SprintBegin()
@@ -214,8 +232,10 @@ void AMS::Dodge()
 {
 	if(Moveable())
 	{
-		DodgeTime=DefaultDodgeTime;// 初始化闪避时间
-		myStatus=MsStatus::Dodging;
+		//DodgeTime=DefaultDodgeTime;// 初始化闪避时间
+		//myStatus=MsStatus::Dodging;
+		FVector DodgeRotation = this->GetCharacterMovement()->Velocity.GetSafeNormal();
+		this->GetCharacterMovement()->Velocity=DodgeRotation*20000.0f;
 		// 播放闪避动作
 		//GetWorldTimerManager().SetTimer(DodgeTimerHandle, this, &AMS::DodgeDrain, 0.5f, true);
 	}
@@ -245,6 +265,7 @@ void AMS::TurnAtRate(float Rate)
 	if(Rate!=0.0f&&Turnable())
 	{		
 		AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+		//AddCameraYawInput(1.0f,Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 	}
 }
 
@@ -255,6 +276,7 @@ void AMS::LookUpAtRate(float Rate)
 	if(Rate!=0.0f&&Turnable())
 	{
 		AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+		//AddCameraPitchInput(1.0f,Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 	}
 }
 
@@ -273,7 +295,28 @@ void AMS::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Tick_Dodge(DeltaTime);
+	//Tick_Dodge(DeltaTime);
+	//UpdateMeshRotation(DeltaTime);
+}
+
+void AMS::UpdateMeshRotation(float DeltaTime)
+{
+	//const float Speed = GetMovementComponent() != NULL ? GetMovementComponent()->Velocity.Size() : 0.0f;
+	// if (Speed < MinVelocityToRotateMesh)
+	// {
+	// 	return;
+	// }
+	FRotator MeshRotation = GetMesh()->GetRelativeRotation();
+	
+	const FVector ProjectedVelocity = FVector::VectorPlaneProject(GetMovementComponent()->Velocity, GetActorUpVector());
+	const FRotator Rot = FRotationMatrix::MakeFromXZ(GetTransform().InverseTransformVector(ProjectedVelocity), GetActorUpVector()).Rotator();
+	
+	//MeshRotation.Yaw = MeshStartRotation.Yaw + GetSpringArm()->GetRelativeRotation().Yaw;
+	//MeshRotation.Roll = MeshStartRotation.Pitch + GetSpringArm()->GetRelativeRotation().Pitch;
+	MeshRotation = MeshStartRotation + GetSpringArm()->GetRelativeRotation();
+
+	GetMesh()->SetRelativeRotation(FMath::RInterpTo(GetMesh()->GetRelativeRotation(), MeshRotation, DeltaTime, RotationInterpSpeed*2));
+
 }
 
 void AMS::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -307,4 +350,5 @@ void AMS::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME_CONDITION(AMS, myStatus, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(AMS, myDriveMode, COND_SkipOwner);
 }

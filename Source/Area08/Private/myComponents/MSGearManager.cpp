@@ -94,6 +94,18 @@ void UMSGearManager::UseMasterWeapon()
 	{
 		this->MasterWeapon->StartFire();
 	}
+	else
+	{
+		
+	}
+}
+
+void UMSGearManager::StopMasterWeapon()
+{
+	if(this->MasterWeapon&&this->MasterWeapon->Type < WeaponType::MS_Melee)
+	{
+		this->MasterWeapon->StopFire();
+	}
 }
 
 void UMSGearManager::SetMasterWeapon()

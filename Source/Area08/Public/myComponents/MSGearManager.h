@@ -86,6 +86,7 @@ protected:
 
 public:	
 	void UseMasterWeapon();
+	void StopMasterWeapon();
 	
 	void SetMasterWeapon();
 	void SetOffhandWeapon();

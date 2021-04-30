@@ -22,6 +22,13 @@ enum class MsStatus : uint8
 	bDied,
 };
 
+UENUM(BlueprintType)
+enum class DriveMode : uint8
+{
+	Walk,
+	Fly
+};
+
 UCLASS()
 class AREA08_API AMS : public AArea08Character
 {
@@ -60,11 +67,14 @@ public:
 	
 	FTimerHandle SprintTimerHandle;// 冲刺时间轴
     
-	FTimerHandle TimeHandle_TimeBetweenPress;// 冲刺充能	
+	FTimerHandle TimeHandle_TimeBetweenPress;// 冲刺充能
 
 	/** Charactors' status change 机甲状态类变量及相关的函数*/	
 	UPROPERTY(Replicated)
 	MsStatus myStatus;
+
+	UPROPERTY(Replicated)
+	DriveMode myDriveMode;
 
 	bool Moveable();// 用此函数来归纳角色状态，决定角色能不能移动
 	bool Runable();
@@ -85,11 +95,13 @@ protected:
 	/** MS battle input*/
 	void StartFire();
 	void StopFire();
+	
 	void Melee();// 近战
 	void RFire();	
 
 	void Dodge();// 角色根据当前速度方向进行前冲，滑步，闪避（怎么叫都可以）
 	void Tick_Dodge(float DeltaTime);// 计时器回调方法，用来计时
+	
 	
 	/** MS move input*/
 	/** Handles moving forward/backward || stafing movement, left and right */
@@ -106,11 +118,13 @@ protected:
 	*/
 	void TurnAtRate(float Rate);
 	void LookUpAtRate(float Rate);
-	void Roll(float Rate);	
+	void Roll(float Rate);
 
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	virtual void UpdateMeshRotation(float DeltaTime)override;
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -118,5 +132,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE MsStatus GetStatusMontagePlay() const { return myStatus; }
+
+	UFUNCTION(BlueprintCallable)
+    FORCEINLINE DriveMode GetDriveModeMontagePlay() const { return myDriveMode; }
 
 };

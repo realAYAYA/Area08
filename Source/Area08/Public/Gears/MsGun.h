@@ -16,7 +16,29 @@ class AREA08_API AMsGun : public AMsWeapon
 
 public:
 	AMsGun();
+	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void OnFire();
 
+	virtual void StartFire()override;
+	virtual void StopFire()override;
+
+	void PlayEffects();		
+
+	/** 联网*/
+	UFUNCTION(Server, Reliable, WithValidation)
+	void SeverFire();
+
+	UPROPERTY(ReplicatedUsing=OnRep_Fire)
+	int FireRep;// 监测变量执行回调，服务器端开火同步到客户端
+	UFUNCTION()
+	void OnRep_Fire();
+	
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+public:	
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	FName MuzzleSocketName;
 	
@@ -48,28 +70,6 @@ public:
 	// UPROPERTY(EditDefaultsOnly, Category = "Components")
 	// TSubclassOf<class UCameraShake> FireCameraShake;// 开火导致镜头摇动
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
-public:
-	UFUNCTION(BlueprintCallable, Category = "Weapon")
-	void OnFire();
-
-	virtual void StartFire()override;
-	virtual void StopFire()override;
-
-	void PlayEffects();		
-
-	/* 联网**/
-	UFUNCTION(Server, Reliable, WithValidation)
-    void SeverFire();
-
-	UPROPERTY(ReplicatedUsing=OnRep_Fire)
-	int FireRep;// 监测变量执行回调，服务器端开火同步到客户端
-	UFUNCTION()
-	void OnRep_Fire();
-	
 	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 };

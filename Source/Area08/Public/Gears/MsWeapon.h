@@ -52,11 +52,35 @@ class AREA08_API AMsWeapon : public AGear
 public:
 	AMsWeapon();
 
+	void PlayEffect();
+
+	/** 枪械部分*/
+	virtual void StartFire() {}
+	virtual void StopFire() {}
+
+	/** 近战攻击部分，可被弹刀，被招架 判定开启*/
+	virtual void Melee() {}
+	virtual void MeleeBreak() {}
+
+	virtual void OnAttackEnableChanged(bool Enable) {}
+	virtual void OnStaggeredEnableChanged(bool Enable) {}
+	virtual void OnParriedEnableChanged(bool Enable) {}
+
+	/** 武器技能*/
+	virtual void Skill1(){}
+	virtual void Skill2(){}
+	virtual void Skill3(){}
+	virtual void Skill4(){}
+
+protected:
+	
+public:
+	/** 基本组件*/
 	UPROPERTY(EditDefaultsOnly, Category = "Properties")
 	WeaponType Type;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	class USceneComponent* Root;// 用作根，防止武器模型为根无法设置姿态
+	class USceneComponent* Root;// 用作根，方便编辑
 
 	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class USkeletalMeshComponent* MeshComponent;
@@ -66,19 +90,7 @@ public:
 
 	class UAudioComponent* AudioPlayComponent;// 声音播放组件
 
-public:
-	void PlayEffect();
-	
-	// 枪械武器的方法接口
-	virtual void StartFire() {}
-	virtual void StopFire() {}
+	/** 枪械部分*/
 
-	// 近战武器的方法接口
-	virtual void Melee() {}
-	virtual void MeleeBreak() {}
-
-	virtual void OnAttackEnableChanged(bool Enable) {}
-	virtual void OnStaggeredEnableChanged(bool Enable) {}
-	virtual void OnParriedEnableChanged(bool Enable) {}
-	
+	/** 近战攻击部分，可被弹刀，被招架 判定开启*/
 };

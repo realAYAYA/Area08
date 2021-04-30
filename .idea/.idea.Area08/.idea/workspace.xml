@@ -6,76 +6,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75bd86e4-fff5-4d66-a1df-946d93266e65" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BasicTracer/Beam.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BasicTracer/M_Beam.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BasicTracer/P_SmokeTrail.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/M_blood_cloud_01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/M_blood_splash_01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/M_blood_splash_03.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/P_blood_splash_02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/T_BloodSplat_03_SubUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/T_BloodSplatter_Frames01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/BloodImpact/clouds_dust_detail_01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/M_Burst.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/M_explosion_subUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/M_radial_ramp.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/M_smoke_subUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/P_Explosion.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/T_Burst_M.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/T_Explosion_SubUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/T_Smoke_SubUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/T_Smoke_Tiled_D.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Explosion/m_flare_01.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/FirstPersonTemplateWeaponFire02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/GenericImpact/Flare_02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/GenericImpact/M_LensFlare_02.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/GenericImpact/M_spark_subUV.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/GenericImpact/P_RifleImpact.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/GenericImpact/T_SparkCore_2X2.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/MuzzleFlash_Master.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/MuzzleFlash_Master_Inst.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/MuzzleFlash_Master_Inst_2.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/MuzzleSmokeOne_1024_11x11.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/MuzzleTwo_2048_6x6.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/Muzzle/P_Muzzle_Large.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/ShellEject/M_ShellEjectMetal.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/ShellEject/P_Rifle_ShellEject.uasset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Content/WeaponEffects/ShellEject/SM_ShellEject.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/indexLayout.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/AnimStarterPack/UE4ASP_Starter_AnimBlueprint.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AnimStarterPack/UE4ASP_Starter_AnimBlueprint.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Combat/Melee/Attack1.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Combat/Melee/Attack1.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Combat/Melee/RootMotion/Attacks/Boss_Attack_Swing_RM.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Combat/Melee/RootMotion/Attacks/Boss_Attack_Swing_RM.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/MyBullet.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/MyBullet.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/MyMsGun.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/MyMsGun.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/testGameMode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testGameMode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/MyMsMeleeWeapon.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Test/testMS.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testMS.uasset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/testMS_Melee.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testMS_Melee.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Test/testMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/AttackingNotifyState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/AttackingNotifyState.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/OnParriedState.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/OnParriedState.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/Gear.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/Gear.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/SpecialGear.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/SpecialGear.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/HUD/MyUserWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/HUD/MyUserWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Items/Bullet.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Items/Bullet.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/myComponents/RayTestComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/myComponents/RayTestComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Items/Bullet.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Items/Bullet.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MsHealthComponent.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MsHealthComponent.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,49 +39,58 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Experimental/ChaosVehicles/ChaosVehiclesCore/Private/WheelSystem.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/PhysicalMaterials/PhysicalMaterial.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/BodySetupEnums.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/Chaos/ChaosEngineInterface.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/OpenGLDrv/Private/OpenGLShaders.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/BehaviorTreeEditor/Private/DetailCustomizations/BlackboardSelectorDetails.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/CoreUObject/Public/UObject/UnrealType.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/CoreUObject/Public/UObject/GCObject.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/CoreUObject/Public/UObject/ConstructorHelpers.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Public/Net/UnrealNetwork.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/AutomationDriver/Private/Specs/AutomationDriver.spec.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/Chaos/ChaosEngineInterface.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Sound/SoundBase.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/DebugCameraController.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/PhysicalMaterials/PhysicalMaterial.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/TextureFormatASTC/Private/TextureFormatASTC.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Public/Windows/WIndowsPlatform.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/MovieSceneTools/Private/TrackEditors/CameraCutTrackEditor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/MovieSceneTools/Private/TrackEditors/CameraShakeSourceShakeTrackEditor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/ActorComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/UnrealEd/Private/MaterialGraphNode.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/Area08/MS.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/MovieSceneTools/Private/TrackEditors/CameraShakeTrackEditor.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerController.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Public/PhysxUserData.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/PlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Pawn.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/CapsuleComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/D3D12RHI/Private/D3D12Device.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Character.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/SceneComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/TreeMap/Public/STreeMap.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/GameplayStatics.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/MovementComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/ActorComponent.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/PropertyEditor/Public/DetailBuilderTypes.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/Area08/Area08Character.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/VulkanRHI/Private/VulkanSwapChain.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/AnimGraphRuntime/Public/KismetAnimationLibrary.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Camera/CameraComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Actor.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/AddContentDialog/Private/ContentSourceProviders/FeaturePack/FeaturePackContentSourceProvider.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/CoreUObject/Public/UObject/UnrealType.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/CharacterMovementComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/AIModule/Classes/Perception/AISense.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/SlateReflector/Private/Widgets/SNavigationSimulationList.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/UMG/Private/Components/Widget.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/PlayerController.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/EditorWidgets/EditorWidgets.Build.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/SceneComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/UMG/Public/Components/Image.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Pawn.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/UMG/Private/Components/MultiLineEditableTextBox.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/DamageType.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Navmesh/Private/Detour/DetourCommon.cpp" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Actor.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Private/Math/UnrealMath.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/PawnMovementComponent.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/Area08/MS.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/CoreUObject/Public/Templates/SubclassOf.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/UMG/Private/Components/EditableTextBox.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/UnrealEd/Public/BSPOps.h" root0="FORCE_HIGHLIGHTING" />
@@ -144,29 +98,25 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/PropertyEditor/Private/DetailCustomBuilderRow.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Engine/EngineTypes.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Engine/TextureRenderTarget2DArray.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/InputComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/SceneComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/Kismet/Private/BlueprintDragDropMenuItem.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Engine/DataTable.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/CharacterMovementComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/GameplayDebugger/Public/GameplayDebuggerPlayerManager.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/SpringArmComponent.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/GameFramework/Character.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/CharacterMovementComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/LocalPlayer.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/ShaderFormatVectorVM/Private/ir_vm_gen_bytecode_visitor.cpp" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Public/Math/Vector.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/UnrealEd/Private/EditorViewportClient.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/InputComponent.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Private/Components/PawnMovementComponent.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/AITestSuite/Public/AITestsCommon.h" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Private/Math/UnrealMath.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Components/PrimitiveComponent.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Core/Public/UObject/NameTypes.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Intermediate/Build/Win64/UE4Editor/Inc/Area08/Area08Character.generated.h" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/AITestSuite/Public/TestLogger.h" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Developer/AITestSuite/AITestSuite.Build.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Classes/Animation/AnimInstance.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Experimental/ChaosVehicles/ChaosVehiclesCore/Private/WheelSystem.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/PhysicsCore/Public/BodySetupEnums.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/OpenGLDrv/Private/OpenGLShaders.cpp" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Editor/BehaviorTreeEditor/Private/DetailCustomizations/BlackboardSelectorDetails.h" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/../../../../../Game/UE_4.26/Engine/Source/Runtime/Engine/Public/Net/UnrealNetwork.h" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
@@ -177,27 +127,27 @@
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/DamageNotifyState.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/HUD/MyUserWidget.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/SpecialGear.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/Gear.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/MsHealthComponent.h" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/AttackingNotifyState.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Items/Bullet.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/RayTestComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Items/Bullet.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/OnParriedState.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1p1jmL3norIyswmCjYcbtZNpBnO" />
@@ -216,6 +166,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="XThreadsFramesViewSplitterKey" value="0.38134593" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -472,7 +423,22 @@
       <workItem from="1617891154815" duration="3197000" />
       <workItem from="1617973142290" duration="4844000" />
       <workItem from="1618067913326" duration="670000" />
-      <workItem from="1618143701490" duration="1206000" />
+      <workItem from="1618143701490" duration="7601000" />
+      <workItem from="1618235386409" duration="3674000" />
+      <workItem from="1618318365896" duration="5617000" />
+      <workItem from="1618404687399" duration="6807000" />
+      <workItem from="1618499003382" duration="1431000" />
+      <workItem from="1618576427466" duration="6968000" />
+      <workItem from="1618665498588" duration="6342000" />
+      <workItem from="1618752341364" duration="2029000" />
+      <workItem from="1618835644080" duration="2568000" />
+      <workItem from="1618922195319" duration="769000" />
+      <workItem from="1619186161551" duration="53000" />
+      <workItem from="1619186869384" duration="1568000" />
+      <workItem from="1619353009914" duration="5149000" />
+      <workItem from="1619536296378" duration="1357000" />
+      <workItem from="1619623409863" duration="141000" />
+      <workItem from="1619793244237" duration="3692000" />
     </task>
     <servers />
   </component>
