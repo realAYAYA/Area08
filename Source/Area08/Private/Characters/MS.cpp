@@ -5,17 +5,20 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
+#include "Components/AudioComponent.h"
+#include "Components/BoxComponent.h"// 碰撞盒子 用于攻击判定
+#include "PhysicalMaterials/PhysicalMaterial.h"// 用于判断物理材质
 #include "UObject/ConstructorHelpers.h"// 用于通过资源引用来调用资源
 
 #include "myComponents/MSGearManager.h"
 #include "myComponents/MsHealthComponent.h"
 #include "myComponents/RayTestComponent.h"
+#include "myComponents/MsAbilitySystemComponent.h"
 #include "Gears/MsWeapon.h"
-#include "Gears/MsGun.h"
-#include "Gears/MsMeleeWeapon.h"
 #include "Blueprint/UserWidget.h"
 #include "HUD/MyUserWidget.h"// Test HUD
+#include "Characters/Area08PlayerControllerBase.h"
+#include "Characters/Area08PlayerStateBase.h"
 
 AMS::AMS() {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -24,11 +27,18 @@ AMS::AMS() {
 	// init MS status
 	myStatus=MsStatus::Normal;
 	myDriveMode=DriveMode::Walk;
-	DefaultDodgeTime=5.0f;
 
 	GearManager = CreateDefaultSubobject<UMSGearManager>(TEXT("GearManagement"));
+	GearManager->SetIsReplicated(true);// Network
 	HealthManager = CreateDefaultSubobject<UMsHealthComponent>(TEXT("HealthComponent"));
+	HealthManager->SetIsReplicated(true);
+	AbilitySystemComponent=CreateDefaultSubobject<UMsAbilitySystemComponent>(TEXT("AbilitySystemComponent"));
+	AbilitySystemComponent->SetIsReplicated(true);
 	LineTracer= CreateDefaultSubobject<URayTestComponent>(TEXT("LineTracer"));
+	
+	AudioPlayComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioPlayComp"));
+	AudioPlayComponent->SetupAttachment(RootComponent);
+	AudioPlayComponent->bAutoActivate = false;// Close Autoplay
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage> PunchMontageObject(TEXT("AnimMontage'/Game/Combat/Melee/Attack1.Attack1'"));
 	if (PunchMontageObject.Succeeded()) {
@@ -40,9 +50,36 @@ AMS::AMS() {
 		MSMontageTable = MontageTableObject.Object;
 	}
 
+	// 近战部分初始化
+	MeleeBoxSocketName="Punch";
+	MeleeBoxScale=FVector(1.5,1.5,1.5);// 拳头大小
+	
+	AttackBox = CreateDefaultSubobject<UBoxComponent>("AttackBoxComp");
+	if (this->GetMesh()) {
+		AttackBox->SetupAttachment(this->GetMesh(), "Attack");
+	}
+	AttackBox->SetCollisionProfileName("Weapon");
+	AttackBox->SetNotifyRigidBodyCollision(true);// 生成撞击事件，不然无法触发碰撞
+	AttackBox->SetBoxExtent(FVector(5));
+
+	StaggeredBox = CreateDefaultSubobject<UBoxComponent>("BlockedBoxComp");
+	if (this->GetMesh()) {
+		StaggeredBox->SetupAttachment(this->GetMesh(), "Staggered");
+	}
+	StaggeredBox->SetCollisionProfileName("WeaponOther");
+	StaggeredBox->SetNotifyRigidBodyCollision(true);
+	StaggeredBox->SetBoxExtent(FVector(5));
+
+	ParriedBox = CreateDefaultSubobject<UBoxComponent>("ParriedBoxComp");
+	if (this->GetMesh()) {
+		ParriedBox->SetupAttachment(this->GetMesh(), "Parried");
+	}
+	ParriedBox->SetCollisionProfileName("WeaponOther");
+	ParriedBox->SetNotifyRigidBodyCollision(true);
+	ParriedBox->SetBoxExtent(FVector(5));
 }
 
-bool AMS::Moveable()
+bool AMS::Moveable()const
 {
 	if(myStatus==MsStatus::Normal||myStatus==MsStatus::Moving)
 	{
@@ -54,7 +91,7 @@ bool AMS::Moveable()
 	}
 }
 
-bool AMS::Runable()
+bool AMS::Runable()const
 {
 	if(true)
 	{
@@ -66,7 +103,7 @@ bool AMS::Runable()
 	}
 }
 
-bool AMS::Turnable()
+bool AMS::Turnable()const
 {
 	if(myStatus==MsStatus::Normal||myStatus==MsStatus::Moving)
 	{
@@ -101,13 +138,6 @@ void AMS::BeginPlay()
 	Super::BeginPlay();
 
 	HealthManager->OnHealthChanged.AddDynamic(this, &AMS::OnHealthChanged);
-
-	if (GearManager && GearManager->MasterWeapon && GearManager->MasterWeapon->Type >= WeaponType::MS_Melee) {
-		AMsMeleeWeapon* M = Cast<AMsMeleeWeapon>(GearManager->MasterWeapon);
-		if (M) {
-			M->OnParriedChanged.AddDynamic(this, &AMS::PlayParriedMontage);
-		}
-	}
 	
 	LineTracer->SetCamera(FirstPersonCameraComponent);
 
@@ -119,6 +149,17 @@ void AMS::BeginPlay()
 			HUD->AddToViewport();
 		}
 	}
+
+	// 近战部分BeginPlay
+	AttackBox->OnComponentBeginOverlap.AddDynamic(this, &AMS::OnHit);// 绑定碰撞事件
+	StaggeredBox->OnComponentBeginOverlap.AddDynamic(this, &AMS::OnParry);
+	ParriedBox->OnComponentBeginOverlap.AddDynamic(this, &AMS::OnParry);
+	// 如果碰撞开关放在构造函数里，有时会失效，可能是蓝图继承的关系
+	AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	// 绑定到武器，如果没有，就绑到拳头上
+	UpdateCollisionBox();
 }
 
 void AMS::TestTouch()
@@ -153,6 +194,115 @@ void AMS::RFire()
 
 }
 
+void AMS::OnHit(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& Hit)// 武器命中要做的事情
+{
+	if (HitActor) {
+		EPhysicalSurface tempSurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Hit generate")), false);
+		// switch (tempSurfaceType)
+		// {
+		// case MS_HEAD:
+		// 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Head hit.")), false);
+		// 	break;
+		// case MS_BODY:
+		// 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, *FString(TEXT("Body hit.")), false);
+		// 	break;
+		// default:
+		// 	break;
+		// }
+
+		if (AudioPlayComponent) {
+			AudioPlayComponent->SetPitchMultiplier(FMath::RandRange(.5f, 4.f));
+
+			//AudioPlayComponent->Play();
+		}
+	}
+}
+
+void AMS::OnParry(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& SweepResult)// 被弹反要做的事情
+{
+	
+}
+
+void AMS::OnStaggered(UPrimitiveComponent* OverlappedComponent, 
+	AActor* HitActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, 
+	bool bFromSweep, const FHitResult& SweepResult)// 武器弹刀要做的事情
+{	
+	//bStaggered.Broadcast(this, 0.0f, 0.0f, 0.0f, InstigatedBy, DamageCauser);// 委托
+}
+
+void AMS::UpdateCollisionBox()
+{
+	AMsWeapon* W=this->GearManager->MasterWeapon;
+	if(this->GearManager&&W)
+	{
+		AttackBox->AttachToComponent(W->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		W->MeleeBoxSocketName);// 先与武器绑定到位置，记得武器不在或者丢弃的时候解绑并重置盒子
+		AttackBox->SetWorldScale3D(W->AttackBoxScale);// 设置大小
+
+		StaggeredBox->AttachToComponent(W->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		W->MeleeBoxSocketName);
+		StaggeredBox->SetWorldScale3D(W->StaggerBoxScale);
+
+		ParriedBox->AttachToComponent(W->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+		W->MeleeBoxSocketName);
+		ParriedBox->SetWorldScale3D(W->ParryBoxScale);
+	}else// 没有武器，碰撞盒绑定到拳头上
+	{
+		if(this->GetMesh())
+		{
+			AttackBox->AttachToComponent(this->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			this->MeleeBoxSocketName);// 先与武器绑定到位置，记得武器不在或者丢弃的时候解绑并重置盒子
+			AttackBox->SetWorldScale3D(this->MeleeBoxScale);// 设置大小
+
+			StaggeredBox->AttachToComponent(this->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			this->MeleeBoxSocketName);
+			StaggeredBox->SetWorldScale3D(this->MeleeBoxScale);
+
+			ParriedBox->AttachToComponent(this->GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,
+			this->MeleeBoxSocketName);
+			ParriedBox->SetWorldScale3D(this->MeleeBoxScale);
+		}
+	}
+}
+
+void AMS::OnAttackEnableChanged(bool Enable)
+{
+	if (Enable) {
+		AttackBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		AttackBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMS::OnStaggeredEnableChanged(bool Enable)
+{
+	if (Enable) {
+		StaggeredBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		StaggeredBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
+void AMS::OnParriedEnableChanged(bool Enable)
+{
+	if (Enable) {
+		ParriedBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		ParriedBox->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+}
+
 void AMS::SetDeath()
 {
 	if (myStatus!=MsStatus::bDied)
@@ -165,7 +315,56 @@ void AMS::SetDeath()
 	this->StopFire();
 }
 
-void AMS::PlayParriedMontage(AMsMeleeWeapon* Weapon, float val)
+void AMS::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	// 对于玩家控制的Character且ASC位于Pawn, 我一般在服务端Pawn的PossessedBy()函数中初始化
+	if(AbilitySystemComponent)
+	{
+		AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	}
+	// ASC MixedMode replication requires that the ASC Owner's Owner be the Controller.
+	SetOwner(NewController);
+
+	// 对于玩家控制的Character且ASC位于PlayerState, 我一般在服务端Pawn的PossessedBy()函数中初始化
+	// AArea08PlayerStateBase* PS = GetPlayerState<AArea08PlayerStateBase>();
+	// if (PS)
+	// {
+	// 	// Set the ASC on the Server. Clients do this in OnRep_PlayerState()
+	// 	AbilitySystemComponent = Cast<UBuffManager>(PS->GetAbilitySystemComponent());
+	//
+	// 	// AI won't have PlayerControllers so we can init again here just to be sure. No harm in initing twice for heroes that have PlayerControllers.
+	// 	PS->GetAbilitySystemComponent()->InitAbilityActorInfo(PS, this);
+	// }
+
+	// 如果你遇到了错误消息LogAbilitySystem: Warning: Can't activate LocalOnly or LocalPredicted Ability %s when not local!
+	// 那么就表明ASC没有在客户端中初始化.
+	// ...
+}
+
+void AMS::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+	// 在客户端PlayerController的OnRep_PlayerState()函数中初始化, 这确保了PlayerState存在于客户端上.
+	// AArea08PlayerStateBase* PS = GetPlayerState<AArea08PlayerStateBase>();
+	// if (PS)
+	// {
+	// 	// Set the ASC for clients. Server does this in PossessedBy.
+	// 	AbilitySystemComponent = Cast<UBuffManager>(PS->GetAbilitySystemComponent());
+	//
+	// 	// Init ASC Actor Info for clients. Server will init its `ASC` when it possesses a new Actor.
+	// 	if(AbilitySystemComponent)
+	// 	{
+	// 		AbilitySystemComponent->InitAbilityActorInfo(PS, this);
+	// 	}
+	// }
+
+	// 如果你遇到了错误消息LogAbilitySystem: Warning: Can't activate LocalOnly or LocalPredicted Ability %s when not local!
+	// 那么就表明ASC没有在客户端中初始化.
+	// ...
+}
+
+void AMS::PlayParriedMontage(AMsWeapon* Weapon, float val)
 {
 	myStatus=MsStatus::bDied;// 在此处打开被弹反的状态变量，在之后的动画通知中会关闭
 	
@@ -238,23 +437,6 @@ void AMS::Dodge()
 		this->GetCharacterMovement()->Velocity=DodgeRotation*20000.0f;
 		// 播放闪避动作
 		//GetWorldTimerManager().SetTimer(DodgeTimerHandle, this, &AMS::DodgeDrain, 0.5f, true);
-	}
-}
-
-void AMS::Tick_Dodge(float DeltaTime)
-{
-	// 在Tick循环中实现丝滑的闪避位移
-	if(myStatus!=MsStatus::Dodging)
-		return;
-	if(DodgeTime>0)
-	{
-		DodgeTime=DodgeTime-DeltaTime>0?DodgeTime-DeltaTime:0;
-		AddMovementInput(GetActorForwardVector(), 2);
-		//AddActorLocalOffset(GetActorForwardVector()*1,true);
-	}
-	else
-	{
-		myStatus=MsStatus::Normal;
 	}
 }
 

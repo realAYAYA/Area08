@@ -15,14 +15,28 @@ public:
 	// Sets default values for this component's properties
 	UMSGearManager();
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE class AMsWeapon* GetMasterWeapon() const { return MasterWeapon; }
+
 	/* TestFromBP*/
 	void InitFromBP();
+
+	void UseMasterWeapon();
+	void StopMasterWeapon();
+	
+	void SetMasterWeapon();
+	void SetOffhandWeapon();
+	void SetBodyGears();
+
+	void DropMasterWeapon();
+	void DropOffhandWeapon();
+
+	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	/* Debug, BPDebug, These variables will be deleted soon*/
 	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
 	TSubclassOf<class AMsWeapon>BPMasterWeapon;
 
-//
 	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
 	TSubclassOf<AMsWeapon> BPOffhandWeapon;
 //
@@ -43,12 +57,17 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "GearSocket")
 	TSubclassOf<ASpecialGear> BPBackPack;
-//
+	
 //	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Socket")
 //	TArray<class AMsDevice*> BPMsDevices;
 //	//怎么去管理很多个机载设备呢？---限定玩家可以手动激活的设备数目为 除主副手装备外 4个，在四肢除分别安装
 //	//即便能安装很多设备，玩家又如何仅靠键鼠去操控呢？更多的机载设备提供 被动型 的功能
-//
+
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+public:	
 	FName MasterWeaponSocketName;
 	FName OffhandWeaponSocketName;
 	FName LeftHandSocketName;
@@ -58,13 +77,13 @@ public:
 
 	UPROPERTY(Replicated)
 	AMsWeapon* MasterWeapon;
-//
+	//
 	UPROPERTY(Replicated)
 	AMsWeapon* OffhandWeapon;
-//
-//	UPROPERTY(Replicated)
-//		class AArmor* Armor;
-//
+	//
+	//	UPROPERTY(Replicated)
+	//		class AArmor* Armor;
+	//
 	UPROPERTY(Replicated)
 	ASpecialGear* LeftHandGear;
 
@@ -76,24 +95,10 @@ public:
 
 	UPROPERTY(Replicated)
 	ASpecialGear* RightLegGear;
-//
-//	UPROPERTY(Replicated)
-//	TArray<class AMsDevice*> MsDevices;
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-public:	
-	void UseMasterWeapon();
-	void StopMasterWeapon();
+	//
+	//	UPROPERTY(Replicated)
+	//	TArray<class AMsDevice*> MsDevices;
 	
-	void SetMasterWeapon();
-	void SetOffhandWeapon();
-	void SetBodyGears();
-
-	void DropMasterWeapon();
-	void DropOffhandWeapon();
-
-	void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+private:
+	class AMS* myOwner;// 保存组件的角色，用于频繁调用
 };

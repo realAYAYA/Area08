@@ -5,11 +5,11 @@
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"// Used by Replicated and GetLifetimeReplicatedProps()
 
+#include"Characters/Ms.h"
 #include"Gears/Armor.h"
 #include"Gears/MsDevice.h"
 #include"Gears/SpecialGear.h"
 #include"Gears/MsWeapon.h"
-#include"Gears/MsMeleeWeapon.h"
 
 // Sets default values for this component's properties
 UMSGearManager::UMSGearManager()
@@ -23,30 +23,29 @@ UMSGearManager::UMSGearManager()
 	RightLegSocketName = "RightLegSocket";
 
 	//this->SetNetAddressable();//Make DSO components net addressable
-	this->SetIsReplicated(true);// Enable replication by default
+	//this->SetIsReplicated(true);// Enable replication by default
 }
 
 void UMSGearManager::InitFromBP()
 {
 	// MasterWeapon
-	ACharacter* Owner = Cast<ACharacter>(GetOwner());
-	if (Owner && Owner->GetLocalRole() == ROLE_Authority)
+	if (myOwner && myOwner->GetLocalRole() == ROLE_Authority)
 	{
 		FActorSpawnParameters SpawnParams;// 创建生成参数
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;// 设置参数：有碰撞时仍要生成
 		MasterWeapon = GetWorld()->SpawnActor<AMsWeapon>(BPMasterWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (MasterWeapon) {
-			MasterWeapon->SetOwner(Owner);
-			MasterWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
-			MasterWeapon->SetHolder(Owner);
+			MasterWeapon->SetOwner(myOwner);
+			MasterWeapon->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
+			MasterWeapon->SetHolder(myOwner);
 		}
 	
 		// OffHandWeapon
 		OffhandWeapon = GetWorld()->SpawnActor<AMsWeapon>(BPOffhandWeapon, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (OffhandWeapon) {
-			OffhandWeapon->SetOwner(Owner);
-			OffhandWeapon->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
-			OffhandWeapon->SetHolder(Owner);
+			OffhandWeapon->SetOwner(myOwner);
+			OffhandWeapon->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, MasterWeaponSocketName);
+			OffhandWeapon->SetHolder(myOwner);
 		}
 		
 		// SpecialGear
@@ -55,24 +54,24 @@ void UMSGearManager::InitFromBP()
 		LeftLegGear = GetWorld()->SpawnActor<ASpecialGear>(BPLeftLegGear, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		RightLegGear = GetWorld()->SpawnActor<ASpecialGear>(BPRightLegGear, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		if (LeftHandGear) {
-			LeftHandGear->SetOwner(Owner);
-			LeftHandGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandSocketName);
-			LeftHandGear->SetHolder(Owner);
+			LeftHandGear->SetOwner(myOwner);
+			LeftHandGear->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftHandSocketName);
+			LeftHandGear->SetHolder(myOwner);
 		}
 		if (RightHandGear) {
-			RightHandGear->SetOwner(Owner);
-			RightHandGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocketName);
-			RightHandGear->SetHolder(Owner);
+			RightHandGear->SetOwner(myOwner);
+			RightHandGear->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightHandSocketName);
+			RightHandGear->SetHolder(myOwner);
 		}
 		if (LeftLegGear) {
-			LeftLegGear->SetOwner(Owner);
-			LeftLegGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftLegSocketName);
-			LeftLegGear->SetHolder(Owner);
+			LeftLegGear->SetOwner(myOwner);
+			LeftLegGear->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, LeftLegSocketName);
+			LeftLegGear->SetHolder(myOwner);
 		}
 		if (RightLegGear) {
-			RightLegGear->SetOwner(Owner);
-			RightLegGear->AttachToComponent(Owner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightLegSocketName);
-			RightLegGear->SetHolder(Owner);
+			RightLegGear->SetOwner(myOwner);
+			RightLegGear->AttachToComponent(myOwner->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, RightLegSocketName);
+			RightLegGear->SetHolder(myOwner);
 		}
 	}
 	
@@ -83,7 +82,7 @@ void UMSGearManager::BeginPlay()
 {
 	Super::BeginPlay();
 	// ...
-
+	myOwner = Cast<AMS>(GetOwner());// 初始化组件指针
 	InitFromBP();
 
 }

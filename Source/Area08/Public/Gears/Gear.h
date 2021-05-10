@@ -15,6 +15,12 @@ public:
 	// Sets default values for this actor's properties
 	AGear();
 
+	class AMS* Holder;// 保存武器的持有者，方便在武器攻击的时调用人物播放动画
+	void SetHolder(AMS* Val){this->Holder=Val;}
+
+	virtual void Activate() {};
+	virtual void Breaken() {};
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ParametersCompensation)
 	int ID;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ParametersCompensation)
@@ -33,10 +39,4 @@ public:
 	float LookUpRate;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = ParametersCompensation)
 	float RollRate;
-
-	class ACharacter* Holder;// 保存武器的持有者，方便在武器攻击的时调用人物播放动画
-	void SetHolder(ACharacter* Val){this->Holder=Val;}
-
-	virtual void Activate() {};
-	virtual void Breaken() {};
 };

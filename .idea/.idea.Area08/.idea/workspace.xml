@@ -6,19 +6,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="75bd86e4-fff5-4d66-a1df-946d93266e65" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/indexLayout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Test/AK74.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08PlayerStateBase.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08PlayerStateBase.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MsAbilitySystemComponent.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Area08/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config/DefaultInput.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultInput.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Content/Test/MyMsMeleeWeapon.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Area08.uproject" beforeDir="false" afterPath="$PROJECT_DIR$/Area08.uproject" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AnimStarterPack/UE4_Mannequin/Mesh/SK_Mannequin.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/AnimStarterPack/UE4_Mannequin/Mesh/UE4_Mannequin_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/AnimStarterPack/UE4_Mannequin/Mesh/UE4_Mannequin_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FPS_Weapon_Bundle/Weapons/Meshes/Ka47/SK_KA47_X.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FPS_Weapon_Bundle/Weapons/Meshes/Ka47/SK_KA47_X.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/FPS_Weapon_Bundle/Weapons/Meshes/Ka47/SK_KA47_X_Skeleton.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/FPS_Weapon_Bundle/Weapons/Meshes/Ka47/SK_KA47_X_Skeleton.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Test/MyMsGun.uasset" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Test/testMS.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testMS.uasset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Content/Test/testMap.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Test/testMap.umap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Area08.Build.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Area08.Build.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" afterDir="false" />
     </list>
@@ -127,27 +138,33 @@
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/DamageNotifyState.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/HUD/MyUserWidget.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/SpecialGear.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/Gear.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/MsHealthComponent.h" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/AttackingNotifyState.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Items/Bullet.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/RayTestComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Items/Bullet.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/AnimNotifies/OnParriedState.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08Character.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08Character.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" />
-      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsGun.cpp" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsGun.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsMeleeWeapon.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsMeleeWeapon.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/Gear.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Gears/MsWeapon.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Area08.Build.cs" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/MSGearManager.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/myComponents/BuffManager.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MSGearManager.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/myComponents/MsHealthComponent.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08PlayerControllerBase.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08PlayerControllerBase.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/Area08PlayerStateBase.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/Area08PlayerStateBase.h" />
       <option value="$PROJECT_DIR$/Source/Area08/Public/Characters/MS.h" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Characters/MS.cpp" />
+      <option value="$PROJECT_DIR$/Source/Area08/Private/Gears/MsWeapon.cpp" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1p1jmL3norIyswmCjYcbtZNpBnO" />
@@ -438,7 +455,19 @@
       <workItem from="1619353009914" duration="5149000" />
       <workItem from="1619536296378" duration="1357000" />
       <workItem from="1619623409863" duration="141000" />
-      <workItem from="1619793244237" duration="3692000" />
+      <workItem from="1619793244237" duration="6622000" />
+      <workItem from="1619877439851" duration="2661000" />
+      <workItem from="1619883220192" duration="1890000" />
+      <workItem from="1619960742250" duration="8063000" />
+      <workItem from="1620049542926" duration="5939000" />
+      <workItem from="1620135329810" duration="5462000" />
+      <workItem from="1620218587025" duration="3000000" />
+      <workItem from="1620307285835" duration="5948000" />
+      <workItem from="1620391806651" duration="6576000" />
+      <workItem from="1620480820781" duration="7120000" />
+      <workItem from="1620548684789" duration="4394000" />
+      <workItem from="1620570544473" duration="3528000" />
+      <workItem from="1620653221596" duration="964000" />
     </task>
     <servers />
   </component>

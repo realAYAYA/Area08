@@ -16,10 +16,9 @@ UMsHealthComponent::UMsHealthComponent()
 	DefaultArmHealth=60.0f;
 	DefaultLegHealth=60.0f;
 
-	{
-		//this->SetNetAddressable();//Make DSO components net addressable
-		this->SetIsReplicated(true);// Enable replication by default
-	}
+	//this->SetNetAddressable();//Make DSO components net addressable
+	//this->SetIsReplicated(true);// Enable replication by default
+	
 }
 
 
